@@ -21,8 +21,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) 
 {
-  if(typeof window !== "undefined")
-  {
+  if (typeof window === 'undefined') return null;
   return (
     <>
     <FrappeProvider 
@@ -55,5 +54,4 @@ export default function RootLayout({
     </FrappeProvider>
     </>
   )
-  }
 }

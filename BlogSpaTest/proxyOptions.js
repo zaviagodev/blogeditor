@@ -7,7 +7,7 @@ export default {
 		ws: true,
 		router: function(req) {
 			const site_name = req.headers.host.split(':')[0];
-			return `http://${site_name}:${webserver_port}`;
+			return `http://${site_name}:${webserver_port}/test`;
 		}
 	}
 };
