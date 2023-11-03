@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cd BlogSpaTest && yarn dev",
-    "build": "cd BlogSpaTest && yarn build"
+    "build": "cd BlogSpaTest && yarn build && yarn start"
   },
   "keywords": [],
   "author": "",

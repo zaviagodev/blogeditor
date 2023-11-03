@@ -9,7 +9,7 @@
     "build": "next build && yarn copy-html-entry",
     "start": "next start",
     "lint": "next lint",
-    "copy-html-entry": "cp ../blogtest/public/spa_test/index.html ../seconde_test/www/spa_test.html"
+    "copy-html-entry": "cp ../BlogSpaTest/out/index.html ../blogtest/www/blogtest.html"
   },
   "dependencies": {
     "socket.io-client": "^4.5.1",

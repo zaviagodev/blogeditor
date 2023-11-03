@@ -9,8 +9,9 @@ const nextConfig = { images: {
   ],
 },
 experimental: {
-  serverActions: true,
+  serverActions: false,
 },
+output : 'export'
 }
 
 module.exports = nextConfig
