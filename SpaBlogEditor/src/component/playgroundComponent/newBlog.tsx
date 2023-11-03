@@ -38,8 +38,8 @@ const Contents =  [{
     "children": []
 }]
 
-const NewBlog = () => {
-    const [blocks] = useState<any>()
+const NewBlog = ({state} : {state :string}) => {
+    const [blocks, setBlocks] = useState<any>()
     const { createDoc, isCompleted } = useFrappeCreateDoc();
     const postContext = useContext(PostContext);
     const [file, setFile] = useState<File>()
@@ -59,7 +59,7 @@ const NewBlog = () => {
         if(isCompleted && postContext.update.submited == 1)
         {
             postContext.ChangeObject(undefined,'submited', 2)
-            router('/pages/blog')
+            router('/')
         }
     },[isCompleted])
 
@@ -118,10 +118,10 @@ const NewBlog = () => {
     });
 
     return (
-        <form className="flex flex-1 flex-col space-y-4" onSubmit={formik.handleSubmit}>
-            <div className="h-screen w-screen flex-1 p-4  rounded-md " >
-            <Composer value={Contents} onChange={(value: any) => formik.setFieldValue("content_json", { blocks: value })}></Composer>
-            </div>
+        <form className="w-full h-full" onSubmit={formik.handleSubmit}>
+
+            <Composer state={state} value={Contents} onChange={(value: any) => {formik.setFieldValue("content_json", { value }),setBlocks(value)}}></Composer>
+
         </form>
     );
 }

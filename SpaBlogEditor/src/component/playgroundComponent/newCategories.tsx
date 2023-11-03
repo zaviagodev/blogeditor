@@ -70,7 +70,7 @@ export default function NewCategory () {
         if(isCompleted && categoryContext.update == 1)
         {
             categoryContext.changeSubmit(2)
-            router('/pages/blog')
+            router('/')
         }
     },[isCompleted])
 

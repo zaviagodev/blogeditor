@@ -8,10 +8,13 @@ import {   BlockNoteView,
     RemoveBlockButton,
     DefaultSideMenu,
     SideMenuPositioner,
-
+    FormattingToolbarPositioner,
+    HyperlinkToolbarPositioner,
+    SlashMenuPositioner,
 
     } from '@blocknote/react';
     import {
+      uploadToTmpFilesDotOrg_DEV_ONLY,
         Block,
         BlockNoteEditor,
         BlockSchema,
@@ -27,11 +30,11 @@ import { Button } from '@/components/ui/button';
 import { AnimationContext } from '@/provider/animationProvider';
 import { TypeContext } from '@/provider/typeProvider';
 import { cn } from '@/lib/utils';
+import FileSelection from './file-selector';
 
 
-export default function Composer  ({ value , onChange , viewOnly = false, className } : {value : any, onChange? : any, viewOnly? : boolean, className ?: string})  {
+export default function Composer  ({state, value , onChange , viewOnly = false, className } : {state : string,value : any, onChange? : any, viewOnly? : boolean, className ?: string})  {
     const view = useContext(TypeContext)
-
 
     const customSchema = {
     // Adds all default blocks.
@@ -42,12 +45,27 @@ export default function Composer  ({ value , onChange , viewOnly = false, classN
     popover : PopOver,
     } satisfies BlockSchema;
 
+    const handleChange = (editor : any) => {
+      onChange && onChange(editor.topLevelBlocks) ; 
+      view.changeBlock(editor.topLevelBlocks) ; 
+      sessionStorage.setItem('block',JSON.stringify(editor.topLevelBlocks))
+    }
+    const GetStorageItem = () => {
+      const temp = sessionStorage.getItem('block')
+      if(temp)
+      {
+        return JSON.parse(temp)
+      }
+      return false
+    }
+
+
     const editor = useBlockNote({
-        initialContent: value,
+        initialContent: GetStorageItem() ? GetStorageItem()  :  value,
         editable: !viewOnly,
+        uploadFile : uploadToTmpFilesDotOrg_DEV_ONLY,
         blockSchema: customSchema,
-        
-        onEditorContentChange: (editor) => {(onChange && onChange(editor.topLevelBlocks)) ; view.changeBlock(editor.topLevelBlocks) }
+        onEditorContentChange: (editor) => handleChange(editor)
     });
 
     const enableDropping = (event : React.DragEvent) =>
@@ -59,7 +77,6 @@ export default function Composer  ({ value , onChange , viewOnly = false, classN
         const id = event.dataTransfer.getData('text')
         const blocks : any = editor.topLevelBlocks;
         let filteredBlocks : any[] = [] 
-        console.log(blocks)
         if (blocks)
                 {
                 filteredBlocks = blocks.filter((item : any) => {
@@ -103,8 +120,13 @@ export default function Composer  ({ value , onChange , viewOnly = false, classN
         }
         
     }
-    return (
-        <BlockNoteView onDragOver={enableDropping} onDrop={handleDrop} className={cn("h-screen w-screen  flex-1 p-4 ",className)} editor={editor} >
+    return ( 
+      <div>
+        <FileSelection mode={state}></FileSelection>
+        <BlockNoteView onDragOver={enableDropping} onDrop={handleDrop} className={cn("h-full w-full ",className)} editor={editor} >
+           <FormattingToolbarPositioner editor={editor} />
+            <HyperlinkToolbarPositioner editor={editor} />
+            <SlashMenuPositioner editor={editor} />
             <SideMenuPositioner
                 editor={editor}
                 sideMenu={(props) => (
@@ -112,6 +134,7 @@ export default function Composer  ({ value , onChange , viewOnly = false, classN
                 )}
             />
         </BlockNoteView>
+      </div>
     )
 }
 

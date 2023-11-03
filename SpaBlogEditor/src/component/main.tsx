@@ -12,6 +12,7 @@ import Header from "./playgroundComponent/header"
 
 export default function MusicPage() {
   const animation = useContext(AnimationContext)
+  sessionStorage.clear()
 
   return (
     <>

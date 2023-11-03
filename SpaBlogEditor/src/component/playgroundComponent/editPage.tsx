@@ -12,7 +12,7 @@ import PostSkeleton from "@/skeletonComponent/skeletonPost";
 
 
 
-    const EditPage = () => {
+    const EditPage = ({state} : {state :string}) => {
     const pageContext = useContext(PageContext)
     const data = pageContext.data? pageContext.data : {} as any;
     const { updateDoc, loading : docLoading, isCompleted } = useFrappeUpdateDoc()
@@ -24,7 +24,7 @@ import PostSkeleton from "@/skeletonComponent/skeletonPost";
         if(isCompleted && pageContext.update == 1)
         {
             pageContext.changeSubmit(2)
-            router('/pages/blog')
+            router('/')
         }
     },[isCompleted])
 
@@ -54,7 +54,7 @@ import PostSkeleton from "@/skeletonComponent/skeletonPost";
             {docLoading ? 'loading ...' :             
             <form className="flex h-full flex-col space-y-4" onSubmit={formik.handleSubmit}>
                 <div className='flex h-full flex-col space-y-4 '>
-                    {data ? <Composer value={formik.initialValues.content_json.blocks} onChange={(value: any) => formik.setFieldValue("content_json", { blocks: value })} /> :  <PostSkeleton></PostSkeleton>}
+                    {data ? <Composer state={state} value={formik.initialValues.content_json.blocks} onChange={(value: any) => formik.setFieldValue("content_json", { blocks: value })} /> :  <PostSkeleton></PostSkeleton>}
                 </div>
             </form>}
         

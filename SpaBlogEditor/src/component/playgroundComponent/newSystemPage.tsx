@@ -60,7 +60,7 @@ const NewSystemPage = () => {
         if(isCompleted && systemPageContext.update.submited == 1)
         {
             systemPageContext.changeSubmit({} as UpdateObject)
-            router('/pages/blog')
+            router('/')
         }
     },[isCompleted])
 

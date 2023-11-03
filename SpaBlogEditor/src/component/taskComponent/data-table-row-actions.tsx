@@ -71,23 +71,23 @@ export function DataTableRowActions<TData>({
       switch (tabType.variable) {
         case 'Categories':
           typeContext.ChangeVariable(page);
-          router('/pages/viewCategory');
+          router('/viewCategory');
           break;
         case 'Post':
           postContext.ChangeVariable(page);
-          router('/pages/viewBlog');
+          router('/viewBlog');
           break;
         case 'Page':
           pageContext.changeVariable(page);
-          router('/pages/viewPage');
+          router('/viewPage');
           break;
         case 'Blogger':
           blogContext.changeVariable(page);
-          router('/pages/viewBlogger');
+          router('/viewBlogger');
           break;
         case 'SystemPage':
           systemPageContext.changeVariable(page);
-          router('/pages/viewSystemPage');
+          router('/viewSystemPage');
           break;
 
       }

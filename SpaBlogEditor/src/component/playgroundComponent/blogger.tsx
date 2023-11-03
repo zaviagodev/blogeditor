@@ -56,7 +56,7 @@ export default function Blogger () {
         if(isCompleted && bloggerContext.update == 1)
         {
             bloggerContext.changeSubmit(2)
-            router('/pages/blog')
+            router('/')
         }
     },[isCompleted])
 

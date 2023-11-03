@@ -88,7 +88,7 @@ export default function PlaygroundPage({state, page} : {state : string, page : T
         </>)}
         <div className={`${page == ('Categories' || 'Blogger') && 'main'} ${animationContext.sidebar ? 'open': ''} flex flex-col pb-0 items-center flex-1 self-stretch h-screen w-full`}>
           <Header className="flex h-[52px] px-[16px] justify-between items-center self-stretch border-b border-[#E4E4E7]"></Header>
-          <div className="flex px-[32px] py-[16px] justify-between items-center self-stretch border-b border-[#E4E4E7] ">
+          <div className="flex px-[32px] z-10 py-[16px] justify-between items-center self-stretch border-b border-[#E4E4E7] ">
             <div className="flex items-center gap-[5px]">
               {animation ? 
               (
@@ -118,16 +118,16 @@ export default function PlaygroundPage({state, page} : {state : string, page : T
               {state != 'view' ? <PresetSave page={page} /> : null }
             </div>
           </div>
-          <Tabs defaultValue="complete" className={`editor flex w-full p-6 8 6 0 items-start flex-1 self-stretch ${animationContext.itemSideBar ? 'open' : ''}`}>
+          <Tabs defaultValue="complete" className={`editor overflow-auto flex  p-6 8 6 0 items-start flex-1 self-stretch ${animationContext.itemSideBar ? 'open' : ''} ${animationContext.sidebarRight ? 'openright' : ''}`}>
             <SideBarRight state={state}/>
-                  <div className="">
+                  <div className="w-full h-full">
                       {(() => {
                         switch(page)
                         {
                         case 'Page' :
                           switch (state) {
                             case 'edit':
-                              return <EditPage />;
+                              return <EditPage state={state}/>;
                             case 'new':
                               return <NewPage />;
                             case 'view':
@@ -138,9 +138,9 @@ export default function PlaygroundPage({state, page} : {state : string, page : T
                         case 'Post' :
                           switch (state) {
                             case 'edit':
-                              return <EditBlog />;
+                              return <EditBlog state={state} />;
                             case 'new':
-                              return <NewBlog />;
+                              return <NewBlog state={state}/>;
                             case 'view':
                               return <Blog/>;
                             default:

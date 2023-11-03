@@ -48,7 +48,7 @@ const NewPage = () => {
         if(isCompleted && pageContext.update== 1)
         {
             pageContext.changeSubmit(2)
-            router('/pages/blog')
+            router('/')
         }
     },[isCompleted])
 

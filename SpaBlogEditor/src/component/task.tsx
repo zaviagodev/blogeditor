@@ -126,7 +126,7 @@ export default function TaskPage() {
           <div className="flex flex-row gap-2">
           {tabType.variable == 'Overview' && <MoreActionsComponent></MoreActionsComponent>}
           {tabType.delete && <DeleteModal className="w-[160px] h-[40px]"></DeleteModal>}
-          <Button className="h-[40px] w-[160px]" onClick={() => {router(`/pages/new${tabType.variable}`)}}><PlusCircle className="w-[16px] h-[16px]" ></PlusCircle > <span className="pl-2" >New {tabType.variable}</span></Button>
+          <Button className="h-[40px] w-[160px]" onClick={() => {router(`new${tabType.variable}`)}}><PlusCircle className="w-[16px] h-[16px]" ></PlusCircle > <span className="pl-2" >New {tabType.variable}</span></Button>
           </div>
         </div>
         {isLoading ? <TabSkeleton/> : (() => {

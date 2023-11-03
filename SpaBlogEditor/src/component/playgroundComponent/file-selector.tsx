@@ -9,6 +9,8 @@ import {
   } from "@/components/ui/hover-card"
 import { PostContext } from "@/provider/postProvider"
 import { useContext, useEffect } from "react"
+import { Button } from "@/components/ui/button";
+import { ImagePlus } from "lucide-react";
 
 
 export default function FileSelection ({mode} : {mode : string} ) {
@@ -37,25 +39,22 @@ export default function FileSelection ({mode} : {mode : string} ) {
 
   
     return (
-        <div className="grid gap-2" >
+        <div className="" >
         <HoverCard openDelay={200}>
         <HoverCardTrigger asChild>
-          <h1>Featured Image</h1>
+          <label htmlFor="add_image">
+          <Button variant={'ghost'} className="gap-2"><ImagePlus className="w-4 h-4 stroke-1"></ImagePlus><span>Change feature image</span></Button>
+          <input id="add_image"    type="file" accept=".svg, .png, .jpeg" onChange={handleFileChange} className={'hidden'}></input>
+          </label>
         </HoverCardTrigger>
         <HoverCardContent
           align="start"
           className="w-[260px] text-sm"
-          side="left"
+          side={'right'}
         >
-          The model which will generate the completion. Some models are suitable
-          for natural language tasks, others specialize in code. Learn more.
+          Chosse the image to add as header
         </HoverCardContent>
       </HoverCard>
-        <Input disabled={mode == 'view' ? true : false}  type="file" accept=".svg, .png, .jpeg" onChange={handleFileChange} className={cn(
-        "w-full justify-between",
-        !preview && "text-muted-foreground"
-        )}></Input>
-
         {preview && (
         <img src={preview} alt="Preview" />
         )}

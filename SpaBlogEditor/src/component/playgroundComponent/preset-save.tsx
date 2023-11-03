@@ -20,6 +20,7 @@ import { PanelLeftClose, UploadCloud, PanelRightClose, Trash2 } from "lucide-rea
 import { AnimationContext } from "@/provider/animationProvider"
 import { CategoryContext } from "@/provider/categoryProvider"
 import { useNavigate } from "react-router-dom"
+import { TypeContext } from "@/provider/typeProvider"
 
 export function PresetSave( {page } : { page  : TabContextType}) {
   const postContext = useContext(PostContext);
@@ -27,12 +28,13 @@ export function PresetSave( {page } : { page  : TabContextType}) {
   const blogContext = useContext(BloggerContext);
   const categoryContext = useContext(CategoryContext)
   const animation = useContext(AnimationContext)
+  const preview = useContext(TypeContext)
   const router = useNavigate()
 
   return (
     <div className="flex justify-center items-center gap-[8px]">
       {page == 'Blogger' || page == 'Categories' ? (<><Button className="flex gap-2" variant={'destructive'}><Trash2 className="w-4 h-4 stroke-1"></Trash2>Delete</Button></>)
-      : (<><Button variant={'ghost'} onClick={() => router('/pages/preview')}>Preview</Button>
+      : (<><Button variant={'ghost'} onClick={() => {preview.changepage('/newPost'), router('/preview')}}>Preview</Button>
       <Dialog>
       <DialogTrigger asChild>
         <Button variant="secondary">Share</Button>
@@ -74,7 +76,7 @@ export function PresetSave( {page } : { page  : TabContextType}) {
         default :
           return <Button className="flex justify-center items-center gap-[5px]" type="submit" onClick={()=> postContext.ChangeObject(undefined,'submited',1)}><UploadCloud className="w-[16px] h-[16px] stroke-1"/>Publish</Button>
       }})()}
-      {page != ('Blogger' ||  'Categories')   &&   <Button variant={'secondary'} onClick={() => animation.toggle('SideBarRight')}>{animation.sidebarRight ? <PanelRightClose className="w-[16px] h-[16px] stroke-1"/> : <PanelLeftClose className="w-[16px] h-[16px] stroke-1"/>}</Button>}
+      {page != ('Blogger' ||  'Categories')   &&   <Button variant={'secondary'} onClick={() => {animation.toggle('SideBarRight'), animation.itemSideBar && animation.toggle('ItemSideBar')}}>{animation.sidebarRight ? <PanelRightClose className="w-[16px] h-[16px] stroke-1"/> : <PanelLeftClose className="w-[16px] h-[16px] stroke-1"/>}</Button>}
     </div>
   )
 }

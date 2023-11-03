@@ -73,23 +73,23 @@ export function DataTable<TData, TValue>({
         switch(tabType.variable) {
           case 'Categories':
             typeContext.ChangeVariable(id);
-            router('/pages/editCategory');
+            router('/editCategory');
             break;
           case 'Post':
             postContext.ChangeVariable(id);
-            router('/pages/editBlog');
+            router('/editPost');
             break;
           case 'Page':
             pageContext.changeVariable(id);
-            router('/pages/editPage');
+            router('/editPage');
             break;
           case 'Blogger':
             blogContext.changeVariable(id);
-            router('/pages/editBlogger');
+            router('/editBlogger');
             break;
           case 'SystemPage':
             sysContext.changeVariable(id);
-            router('/pages/editSystemPage');
+            router('/editSystemPage');
             break;
         }
       }

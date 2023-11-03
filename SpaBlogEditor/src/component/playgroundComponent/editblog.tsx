@@ -12,7 +12,7 @@ import PostSkeleton from "@/skeletonComponent/skeletonPost";
 import { DataDocList } from "typing";
 
 
-    const EditBlog = () => {
+    const EditBlog = ({state} : {state :string}) => {
     const postContext = useContext(PostContext)
     const data = postContext.data? postContext.data : {} as DataDocList;
     const [file, setFile] = useState<File>()
@@ -33,7 +33,7 @@ import { DataDocList } from "typing";
         if(isCompleted && postContext.update.submited == 1)
         {
             postContext.ChangeObject(undefined,'submited', 2)
-            router('/pages/blog')
+            router('/')
         }
     },[isCompleted])
 
@@ -96,7 +96,7 @@ import { DataDocList } from "typing";
             {docLoading ? 'loading ...' :             
             <form className="flex h-full flex-col space-y-4" onSubmit={formik.handleSubmit}>
                 <div className='flex h-full flex-col space-y-4 '>
-                    {data ? <Composer value={formik.initialValues.content_json.blocks} onChange={(value: any) => formik.setFieldValue("content_json", { blocks: value })} /> :  <PostSkeleton></PostSkeleton>}
+                    {data ? <Composer state={state} value={formik.initialValues.content_json.blocks} onChange={(value: any) => formik.setFieldValue("content_json", { blocks: value })} /> :  <PostSkeleton></PostSkeleton>}
                 </div>
             </form>}
         

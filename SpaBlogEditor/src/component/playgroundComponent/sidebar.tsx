@@ -106,7 +106,7 @@ export default function Sidebar ({className} : {className ? : string}){
             <div className="flex flex-col p-2 gap-2 items-start self-stretch">
                 <h1 className="px-[16px] flex justify-center items-center text-[#797979] font-Inter font-semibold text-[14px] leading-[28px] tracking-wider">Elements</h1>
                 <div  className="flex flex-col items-start gap-[12px] self-stretch">
-                    <button className="flex h-[36px] py-2 px-4 justify-between items-center self-stretch rounded-md bg-white hover:bg-slate-50" onClick={() => animation.toggle('ItemSideBar')}>
+                    <button className="flex h-[36px] py-2 px-4 justify-between items-center self-stretch rounded-md bg-white hover:bg-slate-50" onClick={() => {animation.toggle('ItemSideBar'),animation.sidebarRight && animation.toggle('SideBarRight')}}>
                         <div className="flex items-center gap-2">
                             <div className="flex w-9 h-9 p-2.5 justify-between items-center rounded-md bg-[#F48] shadow-md hover:bg-black">
                                 <TextCursorInput className="h-4 w-4 stroke-1 text-white"></TextCursorInput>

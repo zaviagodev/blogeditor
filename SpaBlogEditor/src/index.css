@@ -137,7 +137,7 @@
 .SideBarRight{
   position: fixed;
   top : 140px;
-  right: -350px;
+  right: -370px;
   display: flex;
   padding: 0px 24px;
   flex-direction: column;
@@ -146,10 +146,14 @@
   align-self: stretch;
   transition: all 0.3s ease-in-out; /* Ajouter une transition fluide */
   z-index: 9999;
+  border-left: 1px solid #EBEBED;
+  background-color: white;
+  height: 100%;
+
 }
 
 .SideBarRight.open{
-  right: 32px;
+  right: 0;
 }
 
 .ItemSideBar{
@@ -157,7 +161,7 @@
   top : 140px;
   left : -100px;
   display: flex;
-  width: 320px;
+  width: 370px;
   padding: 6px 0px 16px 0px;
   flex-direction: column;
   align-items: flex-start;
@@ -173,12 +177,20 @@
 .editor{
   position : fixed;
   top : 120px;
-  left : 350px;
+  left : 360px;
+  bottom: 0px;
+  right: 0px;
   transition: all 0.3s ease-in-out; /* Ajouter une transition fluide */
+  right : 0px;
+  z-index: 0;
 }
 
 .editor.open{
   left: 670px;
+}
+
+.editor.openright{
+  right : 370px;
 }
 
 .preview{

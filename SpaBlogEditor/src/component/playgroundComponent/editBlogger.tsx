@@ -1,7 +1,7 @@
 
 import "@blocknote/core/style.css";
 import {useFrappeUpdateDoc} from 'frappe-react-sdk'
-import { Blogger } from "typing";
+import { BloggerType } from "typing";
 import {useFrappeGetDocList, useFrappeFileUpload } from 'frappe-react-sdk'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
@@ -59,7 +59,7 @@ const formSchema = z.object({
 
 export default function NewBlogger () {
     const bloggerContext = useContext(BloggerContext)
-    const data = bloggerContext.data? bloggerContext.data : {} as Blogger;
+    const data = bloggerContext.data? bloggerContext.data : {} as BloggerType;
     const { updateDoc, loading : docLoading, isCompleted } = useFrappeUpdateDoc()
     const [file, setFile] = useState<File>()
     const {upload} = useFrappeFileUpload()
@@ -89,7 +89,7 @@ export default function NewBlogger () {
         if(isCompleted && bloggerContext.update == 1)
         {
             bloggerContext.changeSubmit(2)
-            router('/pages/blog')
+            router('/')
         }
     },[isCompleted])
 
