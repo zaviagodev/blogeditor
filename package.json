@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cd BlogSpaTest && yarn dev",
-    "build": "cd BlogSpaTest && yarn build && yarn start"
+    "dev": "cd SpaBlogEditor && yarn dev",
+    "build": "cd SpaBlogEditor && yarn build && yarn start"
   },
   "keywords": [],
   "author": "",

@@ -220,4 +220,4 @@ app_license = "mit"
 #	"blogtest.auth.validate"
 # ]
 
-website_route_rules = [{'from_route': '/BlogSpaTest/<path:app_path>', 'to_route': 'BlogSpaTest'},]
+website_route_rules = [{'from_route': '/SpaBlogEditor/<path:app_path>', 'to_route': 'SpaBlogEditor'}, {'from_route': '/BlogSpaTest/<path:app_path>', 'to_route': 'BlogSpaTest'},]
