@@ -3,7 +3,7 @@ import "@blocknote/core/style.css";
 import {useFrappeUpdateDoc} from 'frappe-react-sdk'
 import { BloggerType } from "typing";
 import {useFrappeGetDocList, useFrappeFileUpload } from 'frappe-react-sdk'
-import React, { useEffect, useState } from 'react'
+import  { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { BloggerContext } from "@/provider/BloggerProvider";
@@ -34,6 +34,7 @@ import {
   import { Check, ChevronsUpDown } from "lucide-react"
   import { Button } from "@/components/ui/button";
   import { cn } from "@/lib/utils";
+  import {useToast} from "@/components/ui/use-toast";
   
 
 
@@ -49,53 +50,164 @@ const formSchema = z.object({
         message: "Please select a User.",
       }).max(50), 
     avatar : z.string().min(2).max(50).default(''),
-    disabled :  z.boolean().default(false),
+    disabled :  z.number().default(0),
     short_name :  z.string().min(2).max(50).default(''),
 })
 
+import { LoadingStateContext } from "@/provider/loadinStateProvider";
 
 
+interface EditBloggerProps extends React.FormHTMLAttributes<HTMLFormElement>  {
+    className?: string,
+    children?: React.ReactNode,
+}
 
 
-export default function NewBlogger () {
+export default function EditBlogger ({ ...props}:EditBloggerProps) {
+    const [data, setData] = useState<BloggerType>()
     const bloggerContext = useContext(BloggerContext)
-    const data = bloggerContext.data? bloggerContext.data : {} as BloggerType;
-    const { updateDoc, loading : docLoading, isCompleted } = useFrappeUpdateDoc()
+    const [loading, setloading] =  useState(true)
     const [file, setFile] = useState<File>()
-    const {upload} = useFrappeFileUpload()
+    const { updateDoc, isCompleted, loading : updatedoc } = useFrappeUpdateDoc()
+    const {upload, progress} = useFrappeFileUpload()
     const router = useNavigate()
     const [url , setUrl] = useState('')
     const {data : Users} = useFrappeGetDocList('User', {fields : ['full_name'], filters : [['user_type', '=' , 'System User']],limit: 200})
-    const [open, setOpen] = React.useState(false)
+    const [preview, setPreview] = useState<string | null>(null);
+    const {toast} = useToast()
+    const [open, setOpen] = useState(false)
+    const loadingState = useContext(LoadingStateContext)
+
+
+    useEffect(() => {
+        if(updatedoc === true)
+        {   
+            loadingState.setLoading(updatedoc)
+        }
+    },[updatedoc ])
+
+    useEffect(() => {
+        if(isCompleted === true){
+        loadingState.setCompleted(true)}
+    },[isCompleted])
+
+
+    useEffect(() => {
+        if(progress > 0)
+        {
+            loadingState.setProgress(progress)
+        }
+    },[progress])
+
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues : {
+            full_name : data?.full_name ?? "Writer Name",
+            bio : data?.bio ?? '',
+            disabled  : data?.disabled ?? 0,
+            avatar : data?.avatar ?? '',
+            short_name : data?.short_name ?? '',
+        }
+    })
+
+    useEffect(() => {
+        if(bloggerContext.data){
+            setData(bloggerContext.data)
+        }
+    },[bloggerContext.data])
+
+    useEffect(() => {
+        if(sessionStorage.getItem('blogger'))
+        {
+   
+  
+            form.setValue('full_name',JSON.parse(sessionStorage.getItem('blogger')!).full_name)
+            form.setValue('bio',JSON.parse(sessionStorage.getItem('blogger')!).bio)
+            form.setValue('disabled',JSON.parse(sessionStorage.getItem('blogger')!).disabled)
+            form.setValue('short_name',JSON.parse(sessionStorage.getItem('blogger')!).short_name)
+            form.setValue('avatar',JSON.parse(sessionStorage.getItem('blogger')!).avatar)
+            setPreview( 'https://dev.zaviago.com' + JSON.parse(sessionStorage.getItem('blogger')!).avatar ?? undefined)
+            setloading(false)
+        }
+        if(sessionStorage.getItem('image'))
+        {
+            setPreview(sessionStorage.getItem('image'))
+        }
+    },[])
+
+    useEffect(() => {
+        if(data){
+            form.setValue('full_name',data.full_name)
+            form.setValue('bio',data.bio)
+            form.setValue('disabled',data.disabled)
+            form.setValue('short_name',data.short_name)
+            form.setValue('avatar',data.avatar)
+            setPreview( "https://dev.zaviago.com" + data.avatar ?? undefined)
+            sessionStorage.setItem('blogger',JSON.stringify(data))
+            setloading(false)
+        }
+
+    },[data])
+
+    useEffect(() => {
+
+        if(form.getValues())
+        {
+            sessionStorage.setItem('blogger',JSON.stringify(form.getValues()))
+        }
+    },[form.watch('avatar'),form.watch('bio'),form.watch('full_name'),form.watch('disabled'),form.watch('short_name')])
+
+
+    function onSubmit(values: z.infer<typeof formSchema>) {
+        updateDoc("Blogger", data? data?.name : '',{
+            ...values,
+        }).then((response) => {response ? toast({title :'Blogger updated'}) : toast({title :'Error', description : 'An error occured'})})
+      }
+
 
     const handleFile = (target : FileList | null) => {
         if(target)
         {
             setFile(target[0])
-            setUrl(URL.createObjectURL(target[0]))
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setPreview(reader.result as string)
+                sessionStorage.setItem('image', reader.result as string )
+            };
+            reader.readAsDataURL(target[0]);
+            
         }
     }
 
     useEffect(() => {
-        if(url != '' && bloggerContext.update == 1)
+        if(url != '' && bloggerContext.update)
         {
             form.setValue('avatar',url);
-            form.handleSubmit(onSubmit)()
     
         }
     },[url])
 
     useEffect(() => {
-        if(isCompleted && bloggerContext.update == 1)
+        if(form.getValues('avatar') != '' && bloggerContext.update )
         {
-            bloggerContext.changeSubmit(2)
+            form.handleSubmit(onSubmit, (errors) => { toast({variant : 'destructive', title : 'Error', description : 'errors'}), bloggerContext.changeSubmit(false)})()
+
+        }
+    },[form.watch('avatar')])
+
+    useEffect(() => {
+        if(isCompleted && bloggerContext.update)
+        {
+            bloggerContext.changeSubmit(false)
+            form.reset()
             router('/')
         }
     },[isCompleted])
 
     useEffect(() =>{
 
-        if(bloggerContext.update == 1)
+        if(bloggerContext.update)
         {
             if(file)
             {
@@ -108,40 +220,26 @@ export default function NewBlogger () {
                   }).then((response) => {setUrl(response.file_url)})
             }
             else{
-                form.handleSubmit(onSubmit)();
+                form.handleSubmit(onSubmit, (errors) => { toast({variant : 'destructive', title : 'Error', description : 'errors'}), bloggerContext.changeSubmit(false)})()
             }
         }
     },[bloggerContext.update])
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues : {
-            full_name : data?.full_name ?? "Writer Name",
-            bio : data?.bio ?? '',
-            disabled  : data?.disabled ?? false,
-            avatar : data?.avatar ?? '',
-            short_name : data?.short_name ?? '',
-        }
-    })
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        updateDoc("Blogger", data.name,{
-            ...values,
-        })
-      }
 
     return (
         <>
-            {docLoading ? 'loading ...' :
+            {loading ? 'loading ...' :
              <Form {...form}>          
-                <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+                <form className={cn('flex gap-4',props.className)} onSubmit={form.handleSubmit(onSubmit)} {...props}>
+                    <>{props.title && <h1 className="text-[#09090B] font-Inter text-[18px] font-semibold leading-[28px] mb-4">{props.title}</h1>}</>
                     <FormField
                         control={form.control}
                         name="avatar"
-                        render={({ field }) => (
+                        render={() => (
                             <FormItem className="w-[107px] h-[107px]">
                             <FormLabel className="w-full h-full" htmlFor="avatar">
                                 <Avatar className="w-full h-full">
-                                    <AvatarImage src={field.value ?  `https://dev.zaviago.com${field.value}` : url} />
+                                    <AvatarImage src={preview ?? ''} />
                                     <AvatarFallback>{form.getValues('short_name') ? form.getValues('short_name') : 'CN'}</AvatarFallback>
                                     <Input id="avatar" className="hidden" hidden={true} type='file' onChange={(e) => handleFile(e.target.files)} />
                                 </Avatar>
@@ -174,7 +272,7 @@ export default function NewBlogger () {
                         name="full_name"
                         render={({ field }) => (
                             <FormItem className="flex flex-col">
-                            <FormLabel>Admin User</FormLabel>
+                            <FormLabel>Admin User<span className="text-[#FF3131]">*</span></FormLabel>
                                 <Popover open={open} onOpenChange={setOpen}>
                                 <PopoverTrigger asChild>
                                 <FormControl>

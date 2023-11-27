@@ -3,6 +3,8 @@ import {
     CheckCircledIcon,
     StopwatchIcon,
   } from "@radix-ui/react-icons"
+
+  
   
   
   export const statuses = [
@@ -17,15 +19,4 @@ import {
       icon: CheckCircledIcon,
     },
   ]
-  
-  export const contentType = [
-    {
-      label: "JSON",
-      value: "JSON",
-    },
-    {
-      label: "Rich Text",
-      value: "Rich Text",
 
-    },
-  ]

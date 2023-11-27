@@ -3,37 +3,28 @@ import {   BlockNoteView,
     useBlockNote,
     createReactBlockSpec,
 
-    DragHandleMenuItem,
-    DragHandleMenu,
-    RemoveBlockButton,
-    DefaultSideMenu,
-    SideMenuPositioner,
-    FormattingToolbarPositioner,
-    HyperlinkToolbarPositioner,
-    SlashMenuPositioner,
-
     } from '@blocknote/react';
     import {
       uploadToTmpFilesDotOrg_DEV_ONLY,
-        Block,
-        BlockNoteEditor,
         BlockSchema,
     
         defaultBlockSchema,
         defaultProps,
+        PartialBlock,
         
       } from "@blocknote/core";
-import React, {  useContext, useState } from 'react'
+import React, {  useContext, useEffect, useState } from 'react'
 import "@blocknote/core/style.css";
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { AnimationContext } from '@/provider/animationProvider';
 import { TypeContext } from '@/provider/typeProvider';
 import { cn } from '@/lib/utils';
 import FileSelection from './file-selector';
+import { TabContextType } from 'typing';
+import { BlockContext, BlockContextType } from '../test';
 
 
-export default function Composer  ({state, value , onChange , viewOnly = false, className } : {state : string,value : any, onChange? : any, viewOnly? : boolean, className ?: string})  {
+export default function Composer  ({state, page, value , onChange , viewOnly = false, className, noImage = false } : {noImage? : boolean, page : TabContextType, state : string,value : any[] | undefined, onChange? : any, viewOnly? : boolean, className ?: string})  {
     const view = useContext(TypeContext)
 
     const customSchema = {
@@ -41,33 +32,30 @@ export default function Composer  ({state, value , onChange , viewOnly = false, 
     ...defaultBlockSchema,
     // Adds the custom image block.
     horizontal_rule : HorizontalRule,
-    input : InputBlock,
-    popover : PopOver,
     } satisfies BlockSchema;
 
+
     const handleChange = (editor : any) => {
+      console.log('here')
       onChange && onChange(editor.topLevelBlocks) ; 
       view.changeBlock(editor.topLevelBlocks) ; 
       sessionStorage.setItem('block',JSON.stringify(editor.topLevelBlocks))
     }
-    const GetStorageItem = () => {
-      const temp = sessionStorage.getItem('block')
-      if(temp)
-      {
-        return JSON.parse(temp)
-      }
-      return false
+    
+    const handleSetting = (editor :any) => {
+      sessionStorage.setItem('block',JSON.stringify(editor.topLevelBlocks))
     }
 
 
     const editor = useBlockNote({
-        initialContent: GetStorageItem() ? GetStorageItem()  :  value,
+        initialContent :  value,
         editable: !viewOnly,
         uploadFile : uploadToTmpFilesDotOrg_DEV_ONLY,
         blockSchema: customSchema,
-        onEditorContentChange: (editor) => handleChange(editor)
+        onEditorContentChange: (editor) => handleChange(editor),
+        onEditorReady:(editor) => handleSetting(editor), 
+    
     });
-
     const enableDropping = (event : React.DragEvent) =>
     {
         event.preventDefault()
@@ -103,59 +91,19 @@ export default function Composer  ({state, value , onChange , viewOnly = false, 
                         editor.updateBlock(filteredBlocks[0].id,{type : 'horizontal_rule'})
                     }
                 break;
-            case 'input' :
-                    if(filteredBlocks[0].id)
-                    {
-                        editor.updateBlock(filteredBlocks[0].id,{type : 'input'})
-                    }
-                break;
-            case 'popover' :
-                    if(filteredBlocks[0].id)
-                    {
-                        editor.updateBlock(filteredBlocks[0].id,{type : 'popover'});
-                    }
-                    break;
 
 
         }
         
     }
     return ( 
-      <div>
-        <FileSelection mode={state}></FileSelection>
-        <BlockNoteView onDragOver={enableDropping} onDrop={handleDrop} className={cn("h-full w-full ",className)} editor={editor} >
-           <FormattingToolbarPositioner editor={editor} />
-            <HyperlinkToolbarPositioner editor={editor} />
-            <SlashMenuPositioner editor={editor} />
-            <SideMenuPositioner
-                editor={editor}
-                sideMenu={(props) => (
-                <DefaultSideMenu {...props} dragHandleMenu={CustomDragHandleMenu} />
-                )}
-            />
+      <div className='w-full h-full flex flex-col rounded-xl bg-white '>
+        {!noImage && <FileSelection  page = {page} className={`w-full `} mode={state} ></FileSelection>}
+        <BlockNoteView id="blockview" onDragOver={enableDropping} onDrop={handleDrop} className={cn("h-full w-full  rounded-none bg-white",className)} editor={editor} >
         </BlockNoteView>
       </div>
     )
 }
-
-
-const CustomDragHandleMenu : any = (props: {
-    editor: BlockNoteEditor;
-    block: Block;
-  }) => {
-    const animation = useContext(AnimationContext)
-    return (
-      <DragHandleMenu>
-        {/*Default item to remove the block.*/}
-        <RemoveBlockButton {...props}>Delete</RemoveBlockButton>
-        {/*Custom item which opens an alert when clicked.*/}
-        <DragHandleMenuItem onClick={() => animation.toggle('SideBarRight')}>
-          Colors
-        </DragHandleMenuItem>
-      </DragHandleMenu>
-    );
-  };
-
 
   const PopOver = createReactBlockSpec({
     type: "popover",
@@ -216,17 +164,39 @@ const CustomDragHandleMenu : any = (props: {
       backgroundColor :{
         default : 'black'
       },
+      borderRadius : {
+        default : 0.375
+      }
     },
     containsInlineContent: false,
-    render: ({ block }) => (
-      <div id="horizontal_rule" style={{
-        width: `${block.props.width}px`,
-        height: `${block.props.height}px`,
-        background: block.props.backgroundColor,
-        borderRadius: '0.375rem',
-      }}>
-      </div>
-    ),
+    render: ({ block }) => {
+      const {handleBlockChange, blockState} = useContext<BlockContextType>(BlockContext);
+      const [props, setProps] = useState(block.props);
+      const handleClick = () => {
+        // Appeler la fonction de rappel avec le nouvel état
+        handleBlockChange(props , block.id);
+      };
+      useEffect(() => {
+        if(typeof blockState !=`undefined` && blockState.id == block.id)
+        {
+          const div = document.getElementById('blockview');
+          console.log(div?.dispatchEvent(new Event("change")))
+          div && div.dispatchEvent(new Event("change"));
+          setProps( blockState.block )
+        }
+      },[blockState])
+  
+      return (
+        <div id={block.id} onClick={handleClick} className='hover:cursor-pointer'  style={{
+          width: `${props.width}px`,
+          height:  `${props.height}px`,
+          background:   props.backgroundColor,
+          borderRadius:  `${props.borderRadius}rem`,
+          textAlign: props.textAlignment,
+        }}>
+        </div>
+      );
+    },
   });
 
   const InputBlock = createReactBlockSpec({

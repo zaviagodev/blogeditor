@@ -7,10 +7,11 @@ export interface User {
 
 export type UpdateObject = {
   publish_date? : string,
+  published? : boolean,
   image? : File,
   category : string,
   writer : string
-  submited : number
+  submited : boolean
 }
 
 import { z } from "zod"
@@ -21,7 +22,7 @@ const taskSchema = z.object({
   id: z.string(),
   title: z.string(),
   status: z.string(),
-  contentType: z.string(),
+  published_on : z.string(),
 })
 
 export type Task = z.infer<typeof taskSchema>
@@ -30,9 +31,26 @@ const categorySchema = z.object({
   id: z.string(),
   title: z.string(),
   status: z.string(),
+  modified : z.string()
 })
 
 export type CategoryTab = z.infer<typeof categorySchema>
+
+const PageSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  published_on : z.string()
+})
+
+export type PageTab = z.infer<typeof PageSchema>
+
+const SystemSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  published_on : z.string()
+})
+
+export type SystemPageTab = z.infer<typeof SystemSchema>
 
 
 
@@ -77,9 +95,15 @@ export type PostContextType = string
 
 export type contextPost = {
   update : UpdateObject;
+  publish : boolean;
+  setPublish : (value : boolean) => void;
+  submit : boolean;
+  setSubmit : (value : boolean) => void;
   variable : PostContextType;
+  copy : boolean;
   dataList : DataDocList[] | undefined
   data : DataDocList | undefined;
+  makeCopy : (page : string) => void;
   ChangeObject :(newobj?: UpdateObject, property?: keyof UpdateObject, value?: UpdateObject[keyof UpdateObject]) => void;
   ChangeVariable : (newValue: PostContextType) => void;
 }
@@ -91,10 +115,10 @@ export type view = 'mobile' | 'tablet' | 'desktop'
 export type contextType = {
   view : view,
   changeView : (newvalue : view ) => void,
-  previousPage : string,
+  previousPage : TabContextType | undefined,
   block : any,
-  changepage : (newvalue : string) => void,
-  changeBlock : (newvaue : any) => void,
+  changepage : (newvalue : TabContextType) => void,
+  changeBlock : (newvalue : any) => void,
   variable : TypeContextType;
   data : () => {
     data: Category[];
@@ -103,7 +127,11 @@ export type contextType = {
   ChangeVariable : (newValue: TypeContextType) => void;
 }
 
-
+export type error = {
+  category : string,
+  blogger : string,
+  title : string,
+}
 
 export type UserType = {
   name : string,
@@ -116,7 +144,7 @@ export type Category = {
   title : string,
   description : string,
   image : string,
-  published : boolean,
+  published : number,
 }
 
 
@@ -125,7 +153,7 @@ export type BloggerType = {
   full_name : string,
   bio : string,
   avatar : string,
-  disabled : boolean,
+  disabled : number,
   short_name : string,
 }
 
@@ -138,6 +166,8 @@ export type BloggerTask = {
 
 
 export type GetData = {
+  creation : string
+  modified : string,
   name : string,
   full_name : string,
   bio : string,
@@ -173,6 +203,7 @@ number,
 title
 : 
 string,
+blogger : string,
 content_json : string,
 published_on? : string,
 meta_image? : string,

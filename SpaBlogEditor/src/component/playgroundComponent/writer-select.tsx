@@ -26,30 +26,73 @@ import { UserType} from "typing"
 import { useFrappeGetDocList } from "frappe-react-sdk"
 import { PostContext } from "@/provider/postProvider"
 import { useContext, useEffect } from "react"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import NewBlogger from "./newBlogger"
+import { BloggerContext } from "@/provider/BloggerProvider"
+
 
 
 export function WriterSelector({mode} : {mode : string} ) {
   const [open, setOpen] = React.useState(false)
   const [selectedModel, setSelectedModel] = React.useState<UserType>()
   const postContext = useContext(PostContext);
-  const {data} = useFrappeGetDocList<UserType>('Blogger',{fields : [
+  const bloggerContext = useContext(BloggerContext);
+  const {data, mutate} = useFrappeGetDocList<UserType>('Blogger',{fields : [
   'name',
   'full_name'
-   ]} )
+   ],limit:200} )
+   const [dialogOpen, setDialogOpen] = React.useState(false);
+
    useEffect(() => {
-    if(postContext.data?.blogger && !selectedModel && mode != 'new' )
+    if(dialogOpen)
     {
-      const newdata = data?.filter((item) => item.name === postContext.data?.blogger)
-      if(newdata)
-      {
-        setSelectedModel(newdata[0])
-      }
+      sessionStorage.removeItem('blogger')
+    }else{
+      mutate()
     }
-    if(selectedModel  )
+  }, [dialogOpen,sessionStorage.getItem('blogger')]);
+
+  useEffect(() => {
+    if(sessionStorage.getItem('blogger'))
     {
-      postContext.ChangeObject(undefined,'writer',selectedModel?.name)
+      setSelectedModel(JSON.parse(sessionStorage.getItem('blogger')!))
+    }
+  },[])
+
+  useEffect(() => {
+    if(typeof bloggerContext.data != 'undefined')
+    {
+      setSelectedModel(bloggerContext.data)
+    }
+  },[bloggerContext.data])
+
+
+
+  useEffect(() => {
+    if(selectedModel)
+    {
+      postContext.ChangeObject(undefined,'writer',selectedModel.name)
+      sessionStorage.setItem('blogger',JSON.stringify(selectedModel))
     }
   },[selectedModel])
+
+
+  useEffect(() => {
+    if(postContext.data?.blogger)
+    {
+      
+      setSelectedModel(data?.filter((item) => item.name === postContext.data?.blogger)[0])
+      sessionStorage.setItem('blogger',JSON.stringify(data?.filter((item) => item.name === postContext.data?.blogger)[0]))
+    }
+  },[postContext.data?.blogger])
   //use commandGroup tu categorise category in group
   return (
     <div className="grid gap-2">
@@ -74,7 +117,7 @@ export function WriterSelector({mode} : {mode : string} ) {
             role="combobox"
             aria-expanded={open}
             aria-label="Select a model"
-            className="w-full justify-between"
+            className="flex flex-row justify-between"
           >
             {selectedModel ? selectedModel.full_name : "Select a blogger..."}
             <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -100,6 +143,23 @@ export function WriterSelector({mode} : {mode : string} ) {
                 ))}
               </CommandList>
             </Command>
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen} >
+              <DialogTrigger>
+                <Button variant="ghost" className="w-full"  >New Blogger</Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[600px]">
+                <DialogHeader>
+                  <DialogTitle>Blogger</DialogTitle>
+                  <DialogDescription>
+                    Create a new blogger
+                  </DialogDescription>
+                </DialogHeader>
+                  <NewBlogger custom></NewBlogger>
+                <DialogFooter>
+                  <Button onClick={() => {bloggerContext.changeSubmit(true)}} type="submit">Save changes</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </HoverCard>
         </PopoverContent>
       </Popover>

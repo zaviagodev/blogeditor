@@ -29,16 +29,30 @@ export function DatePicker({mode} : {mode : string} ) {
   
 
   useEffect(() => {
-    if(postContext.data?.published_on && !date && mode != 'new')
+    if(sessionStorage.getItem('date'))
     {
-      setDate(new Date(postContext.data.published_on))
+      setDate(new Date(sessionStorage.getItem('date')!))
     }
+  },[])
+
+  useEffect(() => {
+    if(postContext.data?.published_on)
+    {
+      
+      setDate(new Date(postContext.data.published_on))
+    
+    }
+  },[postContext.data?.blog_category])
+
+  useEffect(() => {
     if(date)
     {
       const newDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
-      postContext.ChangeObject(undefined,'publish_date',newDate)
+      postContext.ChangeObject(undefined,`publish_date`,newDate)
+      sessionStorage.setItem('date',newDate)
     }
   },[date])
+
 
   return (
     <div className="grid gap-2">
@@ -56,12 +70,12 @@ export function DatePicker({mode} : {mode : string} ) {
         </HoverCardContent>
       </HoverCard>
     <Popover>
-      <PopoverTrigger asChild>
+      <PopoverTrigger asChild >
         <Button
           disabled={mode == 'view' ? true : false}
           variant={"outline"}
           className={cn(
-            "w-full justify-between",
+            " flex items-center felx-grow justify-between w-[175px]",
             !date && "text-muted-foreground"
           )}
         >

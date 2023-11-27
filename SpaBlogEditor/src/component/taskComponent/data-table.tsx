@@ -37,13 +37,22 @@ import { TypeContext } from "@/provider/typeProvider"
 import { PageContext } from "@/provider/pageProvider"
 import { BloggerContext } from "@/provider/BloggerProvider"
 import { SystemPageContext } from "@/provider/SystemPageProvider"
-import { TabContextType } from "typing"
+import {  TabContextType } from "typing"
+
+
 
 interface DataTableProps<TData, TValue> {
   columns: (ColumnDef<TData, TValue>)[]
   data: TData[]
   currentTab : TabContextType
 }
+
+
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+];
+
+
 
 export function DataTable<TData, TValue>({
   columns,
@@ -56,6 +65,7 @@ export function DataTable<TData, TValue>({
   const pageContext = useContext(PageContext)
   const blogContext = useContext(BloggerContext)
   const sysContext = useContext(SystemPageContext)
+
   const router = useNavigate()
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
@@ -63,8 +73,11 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
+
   const [sorting, setSorting] = React.useState<SortingState>([])
+
   const [goView, setGoView] = React.useState<string>('no')
+  
   React.useEffect(() => {
     if(goView != 'no' )
     {
@@ -120,17 +133,17 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div className="space-y-4 w-full">
+    <div className="space-y-4 w-full ">
       {currentTab != 'Overview' ? <DataTableToolbar table={table} /> : <h1 className="text-[#09090B] font-Inter text-[18px] font-semibold leading-[28px]"
 >Track your latest posts</h1>}
       <div className="rounded-md border">
         <Table>
-          <TableHeader>
+          <TableHeader >
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} >
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} >
+                    <TableHead key={header.id} colSpan={header.colSpan}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -147,19 +160,36 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
+                
                 <TableRow
+                  className=" "
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}   onClick={() => {cell.getValue()? setGoView(cell.id) : null}} >
+                  {row.getVisibleCells().map((cell) => {
+                    if(cell.column.id == 'published_on')
+                    {
+                      if(new Date(cell.renderValue() as string).toString() != 'Invalid Date')
+                      {
+                        const item = new Date(cell.renderValue() as string)
+                        return(
+                          <TableCell  key={cell.id}   onClick={() => {cell.getValue()? setGoView(cell.id) : null}} >
+                            {`${new Date(item).getDate()} ${monthNames[new Date(item).getMonth()]} ${new Date(item).getFullYear()}`}
+                          </TableCell>)
+                      
+                      }
+                    }
+                    return(
+                    <TableCell  key={cell.id}   onClick={() => {cell.getValue()? setGoView(cell.id) : null}} >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
                       )}
-                    </TableCell>
-                  ))}
+                    </TableCell>)
+                  })}
                 </TableRow>
+                
+              
               ))
             ) : (
               <TableRow>
@@ -179,3 +209,29 @@ export function DataTable<TData, TValue>({
     </div>
   )
 }
+
+/*
+                      setLoadingLength(4)
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+];
+  const {data : postData, isLoading} = useFrappeGetDocList<DataDocList>('Blog Post',{fields:['*'],limit : 200});
+    const [loadinglenght, setLoadingLength] = React.useState<number>(4)
+{(tabType.variable == 'Categories' && selectedRow?.id == row.id) && 
+<div  className={`col-span-8 col-start-2  transition-all ease-in-out duration-500 w-full `}>
+{isLoading ? 'loading...' : <div className=" grid grid-flow-row ">
+  {postData?.filter((item)=> item.blog_category === row.getValue('title'))[0] ?
+    
+    <>
+    <div id="Header" className="grid grid-cols-6 border-b border-t border-l  py-1 pl-2">{headerValues.map((item)=> <div className="col-span-2">{item}</div>)}</div>
+    {postData?.filter((item)=> item.blog_category === row.getValue('title')).map((item,index) => 
+    {
+        if(index+1 > loadinglenght )
+        {
+          return null;
+        }
+        return(
+          <div id="body" className="grid grid-cols-6 py-2 border-l border-b last:border-left last:border-b-0 pl-2"key={item.name}><span id="item" className="col-span-2">{item.title}</span><span id="item" className="col-span-2 flex ietms-center gap-2">{status.find((sub)=> item.published == sub.value)?.icon}{status.find((sub)=> item.published == sub.value)?.label}</span> <span id="item" className="col-span-2">{item.published_on? `${new Date(item.published_on).getDate()} ${monthNames[new Date(item.published_on).getMonth()]} ${new Date(item.published_on).getFullYear()}`: '-'}</span> </div>
+        )
+    })} </>: (null)}{(postData ? postData?.filter((item)=> item.blog_category === row.getValue('title')).length : 0) > loadinglenght && <Button onClick={() => {setLoadingLength(200)}}>Load more...</Button>}</div>}
+</div>}*/

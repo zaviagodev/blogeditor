@@ -17,6 +17,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        Slot : "var(--Slot)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -65,8 +66,18 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
+        "table-down": {
+          from: { height: 0 },
+          to: { height: '100% '},
+        },
+        "table-up": {
+          from: { height: '100% '},
+          to: { height: 0 },
+        },
       },
       animation: {
+        'table-down': 'table-down 0.5s ease-out',
+        'table-up': 'table-up 0.5s ease-out',
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },

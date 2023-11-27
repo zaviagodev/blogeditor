@@ -7,8 +7,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { DataTableViewOptions } from "./data-table-view-options"
 
-import { contentType, statuses } from "../taskData/data"
+import { statuses } from "../taskData/data"
 import { DataTableFacetedFilter } from "./data-table-faceted-filter"
+
+
+
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
@@ -29,7 +32,7 @@ export function DataTableToolbar<TData>({
       <div className="flex flex-1 items-center space-x-2">
         <Input
           id="filter"
-          placeholder="Filter tasks..."
+          placeholder="Search..."
           value={(table.getColumn(value)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn(value)?.setFilterValue(event.target.value)
@@ -41,13 +44,6 @@ export function DataTableToolbar<TData>({
             column={table.getColumn("status")}
             title="Status"
             options={statuses}
-          />
-        )}
-        {table.getColumn("contentType") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("contentType")}
-            title="content type"
-            options={contentType} 
           />
         )}
         {isFiltered && (
