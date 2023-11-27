@@ -4,6 +4,7 @@
   "description": "testing spa for BogEditor",
   "main": "index.js",
   "scripts": {
+    "postinstall": "cd SpaBlogEditor && yarn install",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cd SpaBlogEditor && yarn dev",
     "build": "cd SpaBlogEditor && yarn build "
