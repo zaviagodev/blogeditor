@@ -10,13 +10,10 @@ import {   BlockNoteView,
     
         defaultBlockSchema,
         defaultProps,
-        PartialBlock,
         
       } from "@blocknote/core";
 import React, {  useContext, useEffect, useState } from 'react'
 import "@blocknote/core/style.css";
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { TypeContext } from '@/provider/typeProvider';
 import { cn } from '@/lib/utils';
 import FileSelection from './file-selector';
@@ -105,50 +102,6 @@ export default function Composer  ({state, page, value , onChange , viewOnly = f
     )
 }
 
-  const PopOver = createReactBlockSpec({
-    type: "popover",
-    propSchema: {
-      ...defaultProps,
-    },
-    containsInlineContent: true,
-    render: () => {
-        const [isOpen, setIsOpen] = useState(true);
-        const togglePopover = () => {
-            setIsOpen(!isOpen);
-          };
-        return (
-            <>
-            {   
-                 isOpen ?             
-                (<div id="popover" style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    width : '20em',
-                    backgroundColor: '#fff',
-                    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
-                    borderRadius:'5px',
-                    padding: '10px',
-                  }}>
-                    <button style={{ 
-                        marginLeft: 'auto', // Place le bouton en haut à droite 
-                        cursor: 'pointer',
-                        fontSize: '20px',
-                        lineHeight: '1',}} 
-                        onClick={togglePopover} 
-                    >&times;</button>
-                     <div style={{padding: '10px',
-                                display : 'flex',                        
-                                flexDirection : 'column',
-                                justifyContent : 'center',
-                                alignItems : 'flex-start',}}>
-                        <h1 style={{fontSize : '3em', fontWeight : '700',padding: '3px 0',flexGrow: '1',transition: 'font-size .2s'}}>Header</h1>
-                        <p>this is an exemple of a pop over inline content</p>
-                     </div>
-                  </div>) : (<Button onClick={togglePopover} > Show </Button>)
-            }
-            </>
-        )},
-  });
 
 
   const HorizontalRule = createReactBlockSpec({
@@ -199,25 +152,4 @@ export default function Composer  ({state, page, value , onChange , viewOnly = f
     },
   });
 
-  const InputBlock = createReactBlockSpec({
-    type: "input",
-    propSchema: {
-      ...defaultProps,
-      height : {
-        default : 144
-      },
-      width :{
-        default : 4
-      },
-      backgroundColor :{
-        default : 'black'
-      },
-      type : {
-        default : 'women'
-      }
-    },
-    containsInlineContent: false,
-    render: ({ block }) => (
-      <Input id="input" style={{width : `${block.props.height}px`}}/>
-    ),
-  });
+  

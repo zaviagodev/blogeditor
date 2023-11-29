@@ -1,25 +1,25 @@
-import Blog from './pages/blog/page'
 
+import { lazy } from 'react'
 import {createBrowserRouter, createRoutesFromElements, RouterProvider ,Route} from 'react-router-dom'
-import Preview from './pages/preview/page'
-import NewBlog from './pages/newPost/page'
-import NewCategory from './pages/newCategories/page'
-import NewSystemPage from './pages/newSystemPage/page'
-import NewBlogger from './pages/newBlogger/page'
-import NewPage from './pages/newPage/page'
-import EditCategory from './pages/editCategory/page'
-import EditBlog from './pages/editBlog/page'
-import EditBlogger from './pages/editBlogger/page'
-import EditPage from './pages/editPage/page'
-import EditSystemPage from './pages/editSystemPage/page'
-import Test from './component/test'
+const Blog = lazy(() => import('./pages/blog/page'))
+const Preview = lazy(() => import('./pages/preview/page'))
+const NewBlog = lazy(() => import('./pages/newPost/page'))
+const NewCategory = lazy(() => import('./pages/newCategories/page'))
+const NewSystemPage = lazy(() => import('./pages/newSystemPage/page'))
+const NewBlogger = lazy(() => import('./pages/newBlogger/page'))
+const NewPage = lazy(() => import('./pages/newPage/page'))
+const EditCategory = lazy(() => import('./pages/editCategory/page'))
+const EditBlog = lazy(() => import('./pages/editBlog/page'))
+const EditBlogger = lazy(() => import('./pages/editBlogger/page'))
+const EditPage = lazy(() => import('./pages/editPage/page'))
+const EditSystemPage = lazy(() => import('./pages/editSystemPage/page'))
+const Test = lazy(() => import('./component/test'))
 
 
 const router = createBrowserRouter(
-	
 	createRoutesFromElements(
 
-		<Route path='/' >
+		<Route  path='/' >
 			<Route index element={<Blog/>}></Route>
 			<Route path="newPost" element={<NewBlog/>}></Route>
 			<Route path="newCategories" element={<NewCategory/>}></Route>
@@ -34,14 +34,16 @@ const router = createBrowserRouter(
 			<Route path="preview" element={<Preview/>}></Route>
 			<Route path="test" element={<Test/>}></Route>
 		</Route>
-	)
+	),
+	{basename :  '/spablogeditor'}
 )
 
 
 function App() {
+	
   return (
 
-		<RouterProvider router={router}/>
+	<RouterProvider router={router}/>
 
   )
 }

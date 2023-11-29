@@ -1,0 +1,2 @@
+import{j as t,r}from"./vendor-757806b6.js";import{P as e}from"./playground-194b87e0.js";import"./header-fdeff269.js";import"./input-8400eb6f.js";import"./index-c55b90ff.js";import"./button-ef9ca953.js";import"./composer-db2972eb.js";import"./chevron-left-a8bb8f23.js";function g(){return t.jsx(r.Suspense,{fallback:"Loading...",children:t.jsx(e,{state:"edit",page:"SystemPage"})})}export{g as default};
+//# sourceMappingURL=page-5b8a55d2.js.map
