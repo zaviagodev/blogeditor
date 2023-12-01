@@ -10,12 +10,11 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
   } from "@/components/ui/alert-dialog"
-  import { Trash2 } from "lucide-react"
-  import { TabContext } from "@/provider/tabProvider"
-  import { useContext} from "react"
-  import { useFrappeDeleteDoc, useFrappeGetDocList } from "frappe-react-sdk"
+import { Loader2, Trash2 } from "lucide-react"
+import { TabContext } from "@/provider/tabProvider"
+import { useContext} from "react"
+import { useFrappeDeleteDoc, useFrappeGetDocList } from "frappe-react-sdk"
 import { cn } from "@/lib/utils"
-  
 
 export default function DeleteModal ({custom = false, children, className} : {custom? : boolean, children? : React.ReactNode, className? : string}) {
     const tabContext = useContext(TabContext);
@@ -70,15 +69,19 @@ export default function DeleteModal ({custom = false, children, className} : {cu
         <>
             {loading && (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-10">
-                <div className="flex items-center space-x-2 bg-white rounded p-2">
-
-                <span>Loading...</span>
+                <div className="flex items-center space-x-2 bg-white rounded p-6">
+                    <Loader2 className='animate-spin'/>
+                    <span>Deleting...</span>
                 </div>
             </div>
             )}
         <AlertDialog>
-            {!custom && (<AlertDialogTrigger className={cn(className,"rounded-[6px] bg-[#EF4444] text-[#FAFAFA] flex h-[40px] p-2 justify-center items-center gap-2")}><Trash2 className="w-[16px] h-[16px]"></Trash2><span>Delete</span></AlertDialogTrigger>) }
-            {children && (<AlertDialogTrigger>{children}</AlertDialogTrigger>)}
+            {!custom && (
+            <AlertDialogTrigger className={cn(className,"rounded-[6px] bg-[#EF4444] text-sm text-[#FAFAFA] flex px-4 py-2 justify-center items-center gap-2 h-9")}>
+                <Trash2 className="w-4 h-4" />Delete
+            </AlertDialogTrigger>)
+            }
+            {children && (<AlertDialogTrigger className={className}>{children}</AlertDialogTrigger>)}
         <AlertDialogContent>
             <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>

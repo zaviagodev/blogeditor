@@ -1,2 +1,0 @@
-import{j as r,r as o}from"./vendor-0dee934e.js";import{P as t}from"./playground-2a42d31f.js";import"./header-2903a000.js";import"./index-4c3f6d73.js";import"./button-6525b3fa.js";import"./input-5384f3f6.js";import"./composer-a48cb842.js";function g(){return r.jsx(o.Suspense,{fallback:"Loading...",children:r.jsx(t,{state:"new",page:"Blogger"})})}export{g as default};
-//# sourceMappingURL=page-945adfa6.js.map
