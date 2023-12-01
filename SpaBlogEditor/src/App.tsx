@@ -1,6 +1,6 @@
 
 import { Loader2 } from 'lucide-react'
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import {createBrowserRouter, createRoutesFromElements, RouterProvider ,Route} from 'react-router-dom'
 const Blog = lazy(() => import('./pages/blog/page'))
 const Preview = lazy(() => import('./pages/preview/page'))
@@ -15,6 +15,10 @@ const EditBlogger = lazy(() => import('./pages/editBlogger/page'))
 const EditPage = lazy(() => import('./pages/editPage/page'))
 const EditSystemPage = lazy(() => import('./pages/editSystemPage/page'))
 const Test = lazy(() => import('./component/test'))
+import { useFrappeAuth } from 'frappe-react-sdk';
+import { getToken } from './utils/helper'
+
+
 
 
 const router = createBrowserRouter(
@@ -41,6 +45,23 @@ const router = createBrowserRouter(
 
 
 function App() {
+
+
+	const {error, currentUser,getUserCookie} = useFrappeAuth()
+
+
+	
+	useEffect(() => {
+		if(!getToken() && !currentUser)
+		{
+			//window.location.href = '/login'
+		}
+		if(error)
+		{
+			getUserCookie()
+			window.location.href = '/'
+		}
+	},[error, currentUser])
 	
   return (
 	<Suspense fallback={<Loader2 className='animate-spin w-8 h-8 stroke-2 absolute left-1/2 top-1/2'/>}>

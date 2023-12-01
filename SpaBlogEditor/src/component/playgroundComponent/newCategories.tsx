@@ -66,7 +66,6 @@ export default function NewCategory ({...props}:NewCategoryProps) {
         loadingState.setCompleted(true)}
     },[isCompleted])
 
-    useEffect(() => {console.log(preview)},[preview])
 
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -160,6 +159,7 @@ export default function NewCategory ({...props}:NewCategoryProps) {
 
             index != -1 && categoryContext.changeVariable(index!.toString())
             form.reset()
+            setPreview('undefined')
         }
     },[categoryContext.dataList])
 

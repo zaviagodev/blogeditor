@@ -15,15 +15,17 @@ import { FrappeProvider } from 'frappe-react-sdk'
 import { Toaster } from "@/components/ui/toaster"
 import { LoadingStateProvider } from './provider/loadinStateProvider.tsx';
 import { ProgressDemo } from './component/progress.tsx';
+import { getToken } from './utils/helper.tsx';
+
+
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     	  <FrappeProvider
-          url='https://dev.zaviago.com' 
             tokenParams={{
-            type: 'token',
+            type: 'Bearer',
             useToken: true,
-            token: () => `2ad3412e27b5c61:1cf86d7f8a8a367`
+            token: () => getToken() as string
           }}>
       <AnimationProvider>
       <TabProvider>

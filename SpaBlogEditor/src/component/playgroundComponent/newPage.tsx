@@ -108,7 +108,6 @@ export default function NewPage ({ ...props}: NewPageProps)  {
     useEffect(()=>{
         if(props.publish || props.save)
         {
-            console.log('here')
             if(props.save)
             {
                 form.setValue('published',0)
@@ -171,7 +170,6 @@ export default function NewPage ({ ...props}: NewPageProps)  {
 
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
         createDoc('BlogPage',values)
             .then((response) => {response && toast({title :'Page updated'})})
             .catch((err : any) => {toast({title : 'Error', description : err.message, variant : 'destructive'}); setLoading(false);unclick()})

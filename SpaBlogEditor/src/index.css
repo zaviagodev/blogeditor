@@ -55,7 +55,6 @@
 @layer base {
   * {
     @apply border-border;
-    font-family:Inter !important;
   }
   body {
     @apply bg-background text-foreground;

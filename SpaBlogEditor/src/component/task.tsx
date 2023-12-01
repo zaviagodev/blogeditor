@@ -55,7 +55,6 @@ export default function TaskPage() {
   if (data) {
     switch(tabType.variable) {
       case 'Categories':
-        console.log(data)
         tasks = data.reduce((acc: CategoryTab [], item) => {
           acc.push({ 
             id: item.name,

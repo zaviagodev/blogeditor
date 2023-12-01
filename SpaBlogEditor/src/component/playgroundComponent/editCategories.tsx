@@ -184,6 +184,7 @@ export default function EditCategory ({ ...props} : EditCategoryProps) {
         {
             categoryContext.changeSubmit(false)
             form.reset()
+            setPreview(null)
             router('/')
         }
     },[isCompleted])

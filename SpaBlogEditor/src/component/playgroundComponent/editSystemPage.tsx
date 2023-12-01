@@ -88,7 +88,6 @@ export default function EditSystemPage ({ ...props}: EditSystemProps)  {
     useEffect(() => {
         if(form.watch('content_json') || form.watch('blogger'))
         {
-            console.log(form.watch('content_json'), form.watch('blogger'))
             sessionStorage.setItem('data',JSON.stringify({content_json : JSON.stringify(form.watch('content_json')), blogger : form.watch('blogger'), name : form.watch('name')}))
         }
     },[form.watch('content_json'), form.watch('blogger')])
@@ -119,7 +118,6 @@ export default function EditSystemPage ({ ...props}: EditSystemProps)  {
 
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
         updateDoc('SystemPage',values.name,values)
             .then((response) => {response && toast({title :'Page updated'})})
             .catch((err : any) => {toast({title : 'Error', description : err.message, variant : 'destructive'}); setLoading(false);props.returnpublishClick!()})

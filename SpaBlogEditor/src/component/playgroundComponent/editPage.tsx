@@ -81,7 +81,6 @@ export default function EditPage ({ ...props}: EditPageProps)  {
     useEffect(()=>{
         if(props.publish || props.save)
         {
-            console.log('here')
             if(props.save)
             {
                 form.setValue('published',0)
@@ -137,7 +136,6 @@ export default function EditPage ({ ...props}: EditPageProps)  {
     useEffect(() => {
         if(typeof Pagecontext.data?.content_json == 'string')
         {
-            console.log(Pagecontext.data)
             form.setValue( 'content_json' ,JSON.parse(Pagecontext.data.content_json));
             form.setValue( 'blogger' ,Pagecontext.data.blogger );
             form.setValue( 'name' ,Pagecontext.data.name );
@@ -153,7 +151,6 @@ export default function EditPage ({ ...props}: EditPageProps)  {
 
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
         updateDoc('BlogPage',values.name,values)
             .then((response) => {response && toast({title :'Page updated'})})
             .catch((err : any) => {toast({title : 'Error', description : err.message, variant : 'destructive'}); setLoading(false);unclick()})

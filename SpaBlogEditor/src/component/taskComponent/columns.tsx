@@ -323,7 +323,6 @@ export const columnsBlogger: ColumnDef<(BloggerType)>[] = [
       <DataTableColumnHeader column={column} title="Name" className="w-[600px]" />
     ),
     cell: ({ row }) => {
-      console.log(row)
       return (
         <div className="flex space-x-2">
                   <Avatar className="rounded-1 bg-grey">
