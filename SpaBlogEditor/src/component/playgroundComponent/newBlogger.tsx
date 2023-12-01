@@ -110,7 +110,7 @@ export default function NewBlogger ({ ...props } : BloggerProps) {
             setPreview( 'https://dev.zaviago.com' + JSON.parse(sessionStorage.getItem('blogger')!).avatar ?? undefined)
             setloading(false)
         }else{
-            form.setValue('full_name','Writter Name');
+            form.setValue('full_name','Writer Name');
             form.setValue('bio','Write something about the writer.');
             form.setValue('disabled',0);
             setloading(false)
@@ -151,7 +151,7 @@ export default function NewBlogger ({ ...props } : BloggerProps) {
     useEffect(() => {
         if(form.getValues('avatar') != '' && bloggerContext.update)
         {
-            form.handleSubmit(onSubmit, (errors) => { toast({variant : 'destructive', title : 'Error', description : 'errors'}), bloggerContext.changeSubmit(false)})()
+            form.handleSubmit(onSubmit, () => { toast({variant : 'destructive', title : 'Error', description : 'errors'}), bloggerContext.changeSubmit(false)})()
 
         }
     },[form.watch('avatar')])
@@ -196,7 +196,7 @@ export default function NewBlogger ({ ...props } : BloggerProps) {
                   }).then((response) => {setUrl(response.file_url)})
             }
             else{
-                form.handleSubmit(onSubmit, (errors) => { toast({variant : 'destructive', title : 'Error', description : 'errors'}), bloggerContext.changeSubmit(false)})()
+                form.handleSubmit(onSubmit, () => { toast({variant : 'destructive', title : 'Error', description : 'errors'}), bloggerContext.changeSubmit(false)})()
             }
         }
     },[bloggerContext.update])
@@ -226,13 +226,13 @@ export default function NewBlogger ({ ...props } : BloggerProps) {
                             </FormItem>
                         )}
                         />
-                        <h1 className="text-[#71717A] font-Inter text-[36px] font-extrabold leading-[40px] tracking[-0.9px]"
+                        <h1 className="text-[#71717A] font-Inter text-[36px] font-extrabold leading-[40px] tracking[-0.9px] mt-4"
                         >{form.getValues('full_name')}</h1>
                     <FormField
                         control={form.control}
                         name="bio"
                         render={({ field }) => (
-                            <FormItem>
+                            <FormItem className="flex flex-col mt-6">
                             <FormLabel>Bio</FormLabel>
                             <FormControl>
                                 <Textarea placeholder="write something about the writer." {...field} />
@@ -248,7 +248,7 @@ export default function NewBlogger ({ ...props } : BloggerProps) {
                         control={form.control}
                         name="full_name"
                         render={({ field }) => (
-                            <FormItem className="flex flex-col">
+                            <FormItem className="flex flex-col mt-6">
                             <FormLabel>Admin User</FormLabel>
                                 <Popover open={open} onOpenChange={setOpenCommand}>
                                 <PopoverTrigger asChild>
