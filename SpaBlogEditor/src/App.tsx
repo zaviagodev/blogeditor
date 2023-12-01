@@ -1,5 +1,6 @@
 
-import { lazy } from 'react'
+import { Loader2 } from 'lucide-react'
+import { Suspense, lazy } from 'react'
 import {createBrowserRouter, createRoutesFromElements, RouterProvider ,Route} from 'react-router-dom'
 const Blog = lazy(() => import('./pages/blog/page'))
 const Preview = lazy(() => import('./pages/preview/page'))
@@ -18,7 +19,6 @@ const Test = lazy(() => import('./component/test'))
 
 const router = createBrowserRouter(
 	createRoutesFromElements(
-
 		<Route  path='/' >
 			<Route index element={<Blog/>}></Route>
 			<Route path="newPost" element={<NewBlog/>}></Route>
@@ -42,9 +42,9 @@ const router = createBrowserRouter(
 function App() {
 	
   return (
-
-	<RouterProvider router={router}/>
-
+	<Suspense fallback={<Loader2 className='animate-spin w-8 h-8 stroke-2 absolute left-1/2 top-1/2'/>}>
+		<RouterProvider router={router}/>
+	</Suspense>
   )
 }
 
