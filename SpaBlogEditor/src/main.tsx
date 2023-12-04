@@ -15,18 +15,12 @@ import { FrappeProvider } from 'frappe-react-sdk'
 import { Toaster } from "@/components/ui/toaster"
 import { LoadingStateProvider } from './provider/loadinStateProvider.tsx';
 import { ProgressDemo } from './component/progress.tsx';
-import { getToken } from './utils/helper.tsx';
 
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    	  <FrappeProvider
-            tokenParams={{
-            type: 'Bearer',
-            useToken: true,
-            token: () => getToken() as string
-          }}>
+    	  <FrappeProvider>
       <AnimationProvider>
       <TabProvider>
       <LoadingStateProvider>

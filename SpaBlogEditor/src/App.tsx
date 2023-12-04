@@ -39,7 +39,7 @@ const router = createBrowserRouter(
 			<Route path="test" element={<Test/>}></Route>
 		</Route>
 	),
-	{basename :  '/spablogeditor'}
+	{basename :  '/SpaBlogEditor'}
 
 )
 
