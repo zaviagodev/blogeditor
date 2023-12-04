@@ -1,0 +1,2 @@
+import{j as t,r}from"./vendor-790e91e5.js";import{P as o}from"./playground-63b10e79.js";import"./header-8b64253e.js";import"./drawline-165e4df6.js";import"./index-72dfe7e9.js";import"./button-a730fb07.js";import"./floating-ui.dom-696c277b.js";import"./composer-d7e9867e.js";function g(){return t.jsx(r.Suspense,{fallback:"Loading...",children:t.jsx(o,{state:"edit",page:"Page"})})}export{g as default};
+//# sourceMappingURL=page-8b84a23e.js.map
