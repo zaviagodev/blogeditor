@@ -107,7 +107,7 @@ export default function NewBlogger ({ ...props } : BloggerProps) {
             form.setValue('avatar',JSON.parse(sessionStorage.getItem('blogger')!).avatar);
             form.setValue('disabled',JSON.parse(sessionStorage.getItem('blogger')!).disabled);
             form.setValue('short_name',JSON.parse(sessionStorage.getItem('blogger')!).short_name);
-            setPreview( 'https://dev.zaviago.com' + JSON.parse(sessionStorage.getItem('blogger')!).avatar ?? undefined)
+            setPreview(JSON.parse(sessionStorage.getItem('blogger')!).avatar ?? undefined)
             setloading(false)
         }else{
             form.setValue('full_name','Writer Name');

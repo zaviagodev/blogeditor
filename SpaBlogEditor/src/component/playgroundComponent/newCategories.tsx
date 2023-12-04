@@ -86,7 +86,7 @@ export default function NewCategory ({...props}:NewCategoryProps) {
             form.setValue('published',JSON.parse(sessionStorage.getItem('category')!).published)
             form.setValue('image',JSON.parse(sessionStorage.getItem('category')!).image)
             form.setValue('description',JSON.parse(sessionStorage.getItem('category')!).description)
-            setPreview(JSON.parse(sessionStorage.getItem('category')!).image ?  'https://dev.zaviago.com' + JSON.parse(sessionStorage.getItem('category')!).image : 'undefined')
+            setPreview(JSON.parse(sessionStorage.getItem('category')!).image ? JSON.parse(sessionStorage.getItem('category')!).image : 'undefined')
             setloading(false)
         }else{
             setloading(false)

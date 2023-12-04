@@ -127,7 +127,7 @@ export default function EditBlogger ({ ...props}:EditBloggerProps) {
             form.setValue('disabled',JSON.parse(sessionStorage.getItem('blogger')!).disabled)
             form.setValue('short_name',JSON.parse(sessionStorage.getItem('blogger')!).short_name)
             form.setValue('avatar',JSON.parse(sessionStorage.getItem('blogger')!).avatar)
-            setPreview( 'https://dev.zaviago.com' + JSON.parse(sessionStorage.getItem('blogger')!).avatar ?? undefined)
+            setPreview( JSON.parse(sessionStorage.getItem('blogger')!).avatar ?? undefined)
             setloading(false)
         }
         if(sessionStorage.getItem('image'))
@@ -143,7 +143,7 @@ export default function EditBlogger ({ ...props}:EditBloggerProps) {
             form.setValue('disabled',data.disabled)
             form.setValue('short_name',data.short_name)
             form.setValue('avatar',data.avatar)
-            setPreview( "https://dev.zaviago.com" + data.avatar ?? undefined)
+            setPreview(data.avatar ?? undefined)
             sessionStorage.setItem('blogger',JSON.stringify(data))
             setloading(false)
         }
