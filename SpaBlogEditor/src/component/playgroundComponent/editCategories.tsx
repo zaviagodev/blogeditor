@@ -14,12 +14,11 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-  } from "@/components/ui/form"
-  import { Input } from "@/components/ui/input";
- 
-  import { UploadCloud } from "lucide-react"
-  import { TypeContext } from "@/provider/typeProvider";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input";
 
+import { UploadCloud } from "lucide-react"
+import { TypeContext } from "@/provider/typeProvider";
 
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -109,7 +108,7 @@ export default function EditCategory ({ ...props} : EditCategoryProps) {
             form.setValue('published',JSON.parse(sessionStorage.getItem('category')!).published)
             form.setValue('image',JSON.parse(sessionStorage.getItem('category')!).image)
             form.setValue('description',JSON.parse(sessionStorage.getItem('category')!).description)
-            setPreview(JSON.parse(sessionStorage.getItem('category')!).image ?  'https://dev.zaviago.com' + JSON.parse(sessionStorage.getItem('category')!).image : 'undefined')
+            setPreview(JSON.parse(sessionStorage.getItem('category')!).image ? JSON.parse(sessionStorage.getItem('category')!).image : 'undefined')
             setloading(false)
         }
         if(sessionStorage.getItem('image'))
@@ -174,7 +173,7 @@ export default function EditCategory ({ ...props} : EditCategoryProps) {
     useEffect(() => {
         if(form.getValues('image') != '' && categoryContext.update )
         {
-            form.handleSubmit(onSubmit, (errors) => { toast({variant : 'destructive', title : 'Error', description : 'errors'}), categoryContext.changeSubmit(false)})()
+            form.handleSubmit(onSubmit, () => { toast({variant : 'destructive', title : 'Error', description : 'errors'}), categoryContext.changeSubmit(false)})()
 
         }
     },[form.watch('image')])
@@ -185,6 +184,7 @@ export default function EditCategory ({ ...props} : EditCategoryProps) {
         {
             categoryContext.changeSubmit(false)
             form.reset()
+            setPreview(null)
             router('/')
         }
     },[isCompleted])
@@ -206,7 +206,7 @@ export default function EditCategory ({ ...props} : EditCategoryProps) {
             }
             else{
               
-                form.handleSubmit(onSubmit, (errors) => { toast({variant : 'destructive', title : 'Error', description : 'errors'}), categoryContext.changeSubmit(false)})()
+                form.handleSubmit(onSubmit, () => { toast({variant : 'destructive', title : 'Error', description : 'errors'}), categoryContext.changeSubmit(false)})()
             }
         }
     },[categoryContext.update, file])
@@ -218,7 +218,7 @@ export default function EditCategory ({ ...props} : EditCategoryProps) {
             {loading ? 'loading ...' :
              <Form {...form}>          
                 <form className={cn('flex gap-4',props.className)} onSubmit={form.handleSubmit(onSubmit)} {...props}>
-                    <>{props.title && <h1 className="text-[#09090B] font-Inter text-[18px] font-semibold leading-[28px] mb-4">{props.title}</h1>}</>
+                    <>{props.title && <h1 className="text-[#09090B] font-Inter text-[18px] font-semibold leading-[28px]">{props.title}</h1>}</>
                     <FormField
                         control={form.control}
                         name="title"
@@ -255,16 +255,16 @@ export default function EditCategory ({ ...props} : EditCategoryProps) {
                         render={() => (
                             <FormItem className="w-auto h-auto">
                             <FormLabel className="relative w-full h-full " htmlFor="image"> 
-                                    {preview === 'undefined' ?                                         <>
-                                            <div title='header' className="w-full h-[16rem] border rounded-md shadow-sm  button-text"></div>
-                                            <div className="absolute top-1/2 left-1/2 origin-center -translate-x-1/2 -translate-y-1/2  ">
-                                            <div className="flex flex-col items-center gap-2  ">
+                                    {preview === 'undefined' ? 
+                                    <div title='header' className="w-full h-[16rem] border rounded-md shadow-sm flex items-center justify-center button-text">
+                                        <div className="flex flex-col items-center">
+                                            <div className="flex flex-col items-center gap-2">
                                                 <div className="flex items-center justify-center w-10 h-10 bg-slate-200/50 cursor-pointer rounded-full hover:bg-slate-200"><UploadCloud className="stroke-1"/></div>
                                                 <h2>Click to upload image</h2>
-                                                <p className="text-muted-foreground  text-center">PNG or JPEG (max. 800x400px)</p>
+                                                <p className="text-muted-foreground text-center">PNG or JPEG (max. 800x400px)</p>
                                             </div>                                           
-                                            </div>
-                                        </> :
+                                        </div>
+                                    </div>:
                                     <img className={`w-full h-[16rem] object-cover boder rounded-md shqdow-sm  `} src={preview!} alt="no image"/>}
                                     <Input id="image" className="hidden" hidden={true} type='file' onChange={(e) => handleFile(e.target.files)} />
                             </FormLabel>

@@ -127,7 +127,7 @@ export default function EditBlogger ({ ...props}:EditBloggerProps) {
             form.setValue('disabled',JSON.parse(sessionStorage.getItem('blogger')!).disabled)
             form.setValue('short_name',JSON.parse(sessionStorage.getItem('blogger')!).short_name)
             form.setValue('avatar',JSON.parse(sessionStorage.getItem('blogger')!).avatar)
-            setPreview( 'https://dev.zaviago.com' + JSON.parse(sessionStorage.getItem('blogger')!).avatar ?? undefined)
+            setPreview( JSON.parse(sessionStorage.getItem('blogger')!).avatar ?? undefined)
             setloading(false)
         }
         if(sessionStorage.getItem('image'))
@@ -143,7 +143,7 @@ export default function EditBlogger ({ ...props}:EditBloggerProps) {
             form.setValue('disabled',data.disabled)
             form.setValue('short_name',data.short_name)
             form.setValue('avatar',data.avatar)
-            setPreview( "https://dev.zaviago.com" + data.avatar ?? undefined)
+            setPreview(data.avatar ?? undefined)
             sessionStorage.setItem('blogger',JSON.stringify(data))
             setloading(false)
         }
@@ -244,18 +244,18 @@ export default function EditBlogger ({ ...props}:EditBloggerProps) {
                                     <Input id="avatar" className="hidden" hidden={true} type='file' onChange={(e) => handleFile(e.target.files)} />
                                 </Avatar>
                             </FormLabel>
-                            <FormControl>
-                            </FormControl>
+                              <FormControl>
+                              </FormControl>
                             <FormMessage />
                             </FormItem>
                         )}
                         />
-                        <h1 className="text-[#71717A] font-Inter text-[36px] font-extrabold leading-[40px] tracking[-0.9px]">{form.getValues('full_name')}</h1>
+                        <h1 className="text-[#71717A] font-Inter text-[36px] font-extrabold leading-[40px] tracking[-0.9px] mt-4">{form.getValues('full_name')}</h1>
                     <FormField
                         control={form.control}
                         name="bio"
                         render={({ field }) => (
-                            <FormItem>
+                            <FormItem className="flex flex-col mt-6">
                             <FormLabel>Bio</FormLabel>
                             <FormControl>
                                 <Textarea placeholder="write something about the writer." {...field} />
@@ -271,7 +271,7 @@ export default function EditBlogger ({ ...props}:EditBloggerProps) {
                         control={form.control}
                         name="full_name"
                         render={({ field }) => (
-                            <FormItem className="flex flex-col">
+                            <FormItem className="flex flex-col mt-6">
                             <FormLabel>Admin User<span className="text-[#FF3131]">*</span></FormLabel>
                                 <Popover open={open} onOpenChange={setOpen}>
                                 <PopoverTrigger asChild>

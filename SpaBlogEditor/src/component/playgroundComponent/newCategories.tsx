@@ -13,15 +13,10 @@ import {
     FormItem,
     FormLabel,
     FormMessage
-  } from "@/components/ui/form"
-  import { Input } from "@/components/ui/input";
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input";
  
-  import { UploadCloud } from "lucide-react"
-
-
-  
-
-
+import { UploadCloud } from "lucide-react"
 import * as z from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -71,7 +66,6 @@ export default function NewCategory ({...props}:NewCategoryProps) {
         loadingState.setCompleted(true)}
     },[isCompleted])
 
-    useEffect(() => {console.log(preview)},[preview])
 
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -92,7 +86,7 @@ export default function NewCategory ({...props}:NewCategoryProps) {
             form.setValue('published',JSON.parse(sessionStorage.getItem('category')!).published)
             form.setValue('image',JSON.parse(sessionStorage.getItem('category')!).image)
             form.setValue('description',JSON.parse(sessionStorage.getItem('category')!).description)
-            setPreview(JSON.parse(sessionStorage.getItem('category')!).image ?  'https://dev.zaviago.com' + JSON.parse(sessionStorage.getItem('category')!).image : 'undefined')
+            setPreview(JSON.parse(sessionStorage.getItem('category')!).image ? JSON.parse(sessionStorage.getItem('category')!).image : 'undefined')
             setloading(false)
         }else{
             setloading(false)
@@ -134,7 +128,7 @@ export default function NewCategory ({...props}:NewCategoryProps) {
     useEffect(() => {
         if(form.getValues('image') != '' && categoryContext.update)
         {
-            form.handleSubmit(onSubmit, (errors) => {toast({variant : 'destructive', title : 'Error', description : 'errors'}), categoryContext.changeSubmit(false)})()
+            form.handleSubmit(onSubmit, () => {toast({variant : 'destructive', title : 'Error', description : 'errors'}), categoryContext.changeSubmit(false)})()
 
         }
     },[form.watch('image')])
@@ -165,6 +159,7 @@ export default function NewCategory ({...props}:NewCategoryProps) {
 
             index != -1 && categoryContext.changeVariable(index!.toString())
             form.reset()
+            setPreview('undefined')
         }
     },[categoryContext.dataList])
 
@@ -183,7 +178,7 @@ export default function NewCategory ({...props}:NewCategoryProps) {
                   }).then((response) => {setUrl(response.file_url)})
             }
             else{
-                form.handleSubmit(onSubmit, (errors) => {toast({variant : 'destructive', title : 'Error', description : 'errors'}), categoryContext.changeSubmit(false)})()
+                form.handleSubmit(onSubmit, () => {toast({variant : 'destructive', title : 'Error', description : 'errors'}), categoryContext.changeSubmit(false)})()
 
             }
         }
@@ -195,9 +190,9 @@ export default function NewCategory ({...props}:NewCategoryProps) {
         <>
             {loading ? 'loading ...' :
              <Form  {...form}>          
-                <form title={props.title!} className={cn('flex flex-col gap-4',props.className)} {...props} onSubmit={form.handleSubmit(onSubmit)}>
+                <form title={props.title!} className={cn('flex gap-4',props.className)} {...props} onSubmit={form.handleSubmit(onSubmit)}>
 
-                    <>{props.title && <h1 className="text-[#09090B] font-Inter text-[18px] font-semibold leading-[28px] mb-4">{props.title}</h1>}</>
+                    <>{props.title && <h1 className="text-[#09090B] font-Inter text-[18px] font-semibold leading-[28px]">{props.title}</h1>}</>
                     <FormField
                         control={form.control}
                         name="title"
@@ -234,18 +229,17 @@ export default function NewCategory ({...props}:NewCategoryProps) {
                         render={() => (
                             <FormItem className="w-auto h-auto">
                             <FormLabel className="relative w-full h-full " htmlFor="image"> 
-                                    {preview === 'undefined' ?                                         <>
-                                            <div title='header' className="w-full h-[16rem] border rounded-md shadow-sm  button-text"></div>
-                                            <div className="absolute top-1/2 left-1/2 origin-center -translate-x-1/2 -translate-y-1/2  ">
-                                            <div className="flex flex-col items-center gap-2  ">
-                                                <div className="flex items-center justify-center w-10 h-10 bg-slate-200/50 cursor-pointer rounded-full hover:bg-slate-200"><UploadCloud className="stroke-1"/></div>
-                                                <h2>Click to upload image</h2>
-                                                <p className="text-muted-foreground  text-center">PNG or JPEG (max. 800x400px)</p>
-                                            </div>                                           
-                                            </div>
-                                        </> :
-                                    <img className={`w-full h-[16rem] object-cover boder rounded-md shqdow-sm  `} src={preview} alt="no image"/>}
-                                    <Input id="image" className="hidden" hidden={true} type='file' onChange={(e) => handleFile(e.target.files)} />
+                            {preview === 'undefined' ?
+                                <div title='header' className="w-full h-[16rem] border rounded-md shadow-sm flex items-center justify-center button-text">
+                                    <div className="flex flex-col items-center">
+                                        <div className="flex flex-col items-center gap-2">
+                                            <div className="flex items-center justify-center w-10 h-10 bg-slate-200/50 cursor-pointer rounded-full hover:bg-slate-200"><UploadCloud className="stroke-1"/></div>
+                                            <h2>Click to upload image</h2>
+                                            <p className="text-muted-foreground text-center">PNG or JPEG (max. 800x400px)</p>
+                                        </div>                                           
+                                    </div>
+                                </div> : <img className={`w-full h-[16rem] object-cover boder rounded-md shqdow-sm  `} src={preview} alt="no image"/>}
+                                <Input id="image" className="hidden" hidden={true} type='file' onChange={(e) => handleFile(e.target.files)} />
                             </FormLabel>
                             <FormControl>
                             </FormControl>

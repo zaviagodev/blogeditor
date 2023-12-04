@@ -28,24 +28,24 @@ export default function FileSelection ({mode, className, page} : {page : TabCont
           if (postContext.data?.meta_image && !preview )
           {
 
-            setPreview('https://dev.zaviago.com' + postContext.data.meta_image)
-            sessionStorage.setItem('image', 'https://dev.zaviago.com' + postContext.data.meta_image)
+            setPreview(postContext.data.meta_image)
+            sessionStorage.setItem('image', postContext.data.meta_image)
           }
           break;
         case 'Page':
           if (pageContext.data?.meta_image && !preview )
           {
 
-            setPreview('https://dev.zaviago.com' + pageContext.data.meta_image)
-            sessionStorage.setItem('image', 'https://dev.zaviago.com' + pageContext.data.meta_image)
+            setPreview(pageContext.data.meta_image)
+            sessionStorage.setItem('image', pageContext.data.meta_image)
           }
           break;
         case 'SystemPage':
           if(sysCont.data?.meta_image && !preview )
           { 
 
-            setPreview('https://dev.zaviago.com' + sysCont.data.meta_image)
-            sessionStorage.setItem('image', 'https://dev.zaviago.com' + sysCont.data.meta_image)
+            setPreview(sysCont.data.meta_image)
+            sessionStorage.setItem('image', sysCont.data.meta_image)
           }
           break;
       }

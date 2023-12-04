@@ -1,2 +1,0 @@
-import{j as t,r}from"./vendor-0dee934e.js";import{P as e}from"./playground-2a42d31f.js";import"./header-2903a000.js";import"./index-4c3f6d73.js";import"./button-6525b3fa.js";import"./input-5384f3f6.js";import"./composer-a48cb842.js";function d(){return t.jsx(r.Suspense,{fallback:"Loading...",children:t.jsx(e,{state:"edit",page:"SystemPage"})})}export{d as default};
-//# sourceMappingURL=page-809ff217.js.map

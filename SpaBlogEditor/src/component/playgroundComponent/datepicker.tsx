@@ -24,9 +24,7 @@ export function DatePickerDemo({...props}: DatePickerProps) {
   React.useEffect(() => {
     if(props.default)
     {
-      console.log(props.default)
       setDate(new Date(props.default))
-      console.log(new Date(props.default))
     }
   },[props.default])
 

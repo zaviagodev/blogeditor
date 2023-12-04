@@ -68,7 +68,7 @@ app_license = "mit"
 # ------------
 
 # before_install = "blogtest.install.before_install"
-# after_install = "blogtest.install.after_install"
+after_install = "blogtest.install.after_install"
 
 # Uninstallation
 # ------------

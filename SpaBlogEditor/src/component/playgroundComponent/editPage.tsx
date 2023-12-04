@@ -26,7 +26,7 @@ import SideBarRight from "./sidebareright";
 
 const formSchema = z.object({
     name : z.string(),
-    blogger : z.string({ required_error: "Please select a writter." }).min(2,{ message: "Writter must be at least 2 characters.", }).max(50),
+    blogger : z.string({ required_error: "Please select a writer." }).min(2,{ message: "Writer must be at least 2 characters.", }).max(50),
     title : z.string({ required_error: "Please enter a title." }).min(2,{ message: "Title must be at least 2 characters.", }).max(50),
     content_json : z.object({blocks : z.array(z.any())}).required(),
     published : z.number(),
@@ -81,7 +81,6 @@ export default function EditPage ({ ...props}: EditPageProps)  {
     useEffect(()=>{
         if(props.publish || props.save)
         {
-            console.log('here')
             if(props.save)
             {
                 form.setValue('published',0)
@@ -137,7 +136,6 @@ export default function EditPage ({ ...props}: EditPageProps)  {
     useEffect(() => {
         if(typeof Pagecontext.data?.content_json == 'string')
         {
-            console.log(Pagecontext.data)
             form.setValue( 'content_json' ,JSON.parse(Pagecontext.data.content_json));
             form.setValue( 'blogger' ,Pagecontext.data.blogger );
             form.setValue( 'name' ,Pagecontext.data.name );
@@ -153,7 +151,6 @@ export default function EditPage ({ ...props}: EditPageProps)  {
 
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
         updateDoc('BlogPage',values.name,values)
             .then((response) => {response && toast({title :'Page updated'})})
             .catch((err : any) => {toast({title : 'Error', description : err.message, variant : 'destructive'}); setLoading(false);unclick()})
@@ -175,7 +172,7 @@ export default function EditPage ({ ...props}: EditPageProps)  {
                                         name={input.name}
                                         render={({ field }) => (
                                             <FormItem className="flex flex-col">
-                                            <FormLabel>Writter</FormLabel>
+                                            <FormLabel>Writer</FormLabel>
                                             <FormControl>
                                                 {!input.dropdown ?  <DatePickerDemo className="w-[200px]" default={field.value!} onDateSelected={(date) => {form.setValue('published_on',`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`)}} ></DatePickerDemo> 
                                                 : 
