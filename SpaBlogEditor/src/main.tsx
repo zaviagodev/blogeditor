@@ -22,7 +22,15 @@ import { ProgressDemo } from './component/progress.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    	<FrappeProvider>
+    	<FrappeProvider 
+      tokenParams={
+        {
+          useToken: true,
+          token: () => process.env.TOKEN!,
+          type: 'Bearer'
+        }
+      }
+        >
       <AnimationProvider>
       <TabProvider>
       <LoadingStateProvider>

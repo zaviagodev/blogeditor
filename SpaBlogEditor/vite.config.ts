@@ -11,6 +11,12 @@ export default defineConfig({
 	server: {
 		port: 8080,
 		proxy: getProxyOptions({ port: webserver_port }),
+		cors: {
+			origin: "*",
+			credentials: true,
+			methods: "GET POST PUT DELETE OPTIONS",
+			
+		}
 	},
 	resolve: {
 		alias: {
