@@ -162,7 +162,7 @@ export default function EditPage ({ ...props}: EditPageProps)  {
     return (<>
         {loading ? <Loader2 className="w-8 h-8 stoke-1 animate-spin absolute top-1/2 left-1/2"></Loader2> : 
         <Form {...form} >
-            <form {...props}  className={cn('flex gap-4 ',props.className)} onSubmit={form.handleSubmit(onSubmit)}  >
+            <form {...props}  className={cn('flex flex-col gap-4 ',props.className)} onSubmit={form.handleSubmit(onSubmit)}  >
                 <SideBarRight default>
                     {PageInput.map((input) => {
                             return(

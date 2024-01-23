@@ -217,7 +217,7 @@ export default function EditCategory ({ ...props} : EditCategoryProps) {
         <>
             {loading ? 'loading ...' :
              <Form {...form}>          
-                <form className={cn('flex gap-4',props.className)} onSubmit={form.handleSubmit(onSubmit)} {...props}>
+                <form className={cn('flex flex-col gap-4',props.className)} onSubmit={form.handleSubmit(onSubmit)} {...props}>
                     <>{props.title && <h1 className="text-[#09090B] font-Inter text-[18px] font-semibold leading-[28px]">{props.title}</h1>}</>
                     <FormField
                         control={form.control}
