@@ -10,7 +10,7 @@ import {Link} from "react-router-dom";
 
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { ChevronRight, PlusCircle, Shuffle, UserPlus, Users, ChevronsUpDown, PanelLeftClose, LayoutGrid, LayoutDashboard, Newspaper, UserCircle, Layout, Search, Settings, PanelLeftOpen, Home } from "lucide-react"
+import { ChevronRight, PlusCircle, Shuffle, UserPlus, Users, ChevronsUpDown, PanelLeftClose, LayoutGrid, LayoutDashboard, Newspaper, UserCircle, Layout, Search, Settings, PanelLeftOpen, Home, Check } from "lucide-react"
 import { Icons } from "@/components/ui/icons"
 import { BellIcon } from "@radix-ui/react-icons"
 import { ListIcons } from "./sidebar/sidebardata/side-data"
@@ -58,10 +58,20 @@ export function SidebarMain({ className}: {className? : string}) {
   const [open, setOpen] = useState(false)
   const [selected, setSelected] = useState(0)
 
+  const workspaceMenus = [
+    {title:'WorkSpace', icon:<Icons.ZaviagoAppIcon className='w-[30px] h-[30px]'/>, desc:'ระบบจัดการธุรกิจและขายสินค้า', link:'https://zaviago-dashboard.vercel.app/'},
+    {title:'จัดการธุรกิจ', icon:<Icons.ErpAppIcon className='w-[30px] h-[30px]'/>, desc:'ระบบจัดการธุรกิจและขายสินค้า', link:'https://www.zaviago.com/manage'},
+    {title:'บล็อกและบทความ', icon:<Icons.BlogAndPagesAppIcon className='w-[30px] h-[30px]'/>, desc:'สร้างข่าวสารและเขียนบทความ', link:'/coming-soon', enabled:<Check className="h-4 w-4"/>},
+    {title:'CRM', icon:<Icons.PosAppIcon className='w-[30px] h-[30px]'/>, desc:'จัดการและดูข้อมูลลูกค้าต่างๆ', link:'https://www.zaviago.com/crm'},
+    {title:'เว็บไซต์', icon:<Icons.WebsiteApp className='w-[30px] h-[30px]'/>, desc:'สร้างและออกแบบเว็บไซต์', link:'/coming-soon'},
+    {title:'MarketConnect', icon:<Icons.MarketConnectApp className='w-[30px] h-[30px]'/>, desc:'จัดการออเดอร์จาก eCommerce Platform', link:'https://www.zaviago.com/marketplace'},
+    {title:'Canvas', icon:<Icons.CanvasApp className='w-[30px] h-[30px]'/>, desc:'ระบบออกแบบ Graphics', link:'/coming-soon'}
+  ]
+
   return (
     <> 
     <div id='full sidebar' className={cn(className, 'h-screen w-auto flex flex-column')}>
-      <div id='first sidebar' className="fixed top-0 left-0 gap-[3px] py-3 px-3 flex flex-col items-center w-[60px] h-screen border-r border-[#E4E4E7] z-10 bg-white" >
+      {/* <div id='first sidebar' className="fixed top-0 left-0 gap-[3px] py-3 px-3 flex flex-col items-center w-[60px] h-screen border-r border-[#E4E4E7] z-10 bg-white" >
         <div className="nav-left-side">
           {animation.sidebar === true ? (
             <Button variant={'secondary'} className="px-[9px] border" onClick={()=> window.location.href="https://zaviago-dashboard.vercel.app/"}>
@@ -120,103 +130,57 @@ export function SidebarMain({ className}: {className? : string}) {
               <PlusCircle className="w-4 h-4"></PlusCircle>
             </Link>
           </div>
-      </div>
+      </div> */}
 
-      <div id='second sidebar' className={`nav-bar ${animation.sidebar ? 'open' : 'close'} h-screen border-r border-[#E4E4E7] bg-white p-3`}>
+      <div id='second sidebar' className={`nav-bar h-screen border-r border-[#E4E4E7] bg-white pt-[18px]`}>
         <div id="container" className="flex flex-col gap-4">
           <div id="primary">
-            <div id='popover' className="flex pb-2 bg-white flex-row gap-2" aria-label="Sidebar">
-            <Popover open={open} onOpenChange={setOpen}>
-            <PopoverTrigger asChild>
-              <Button
-                variant="secondary"
-                role="combobox"
-                aria-expanded={open}
-                className="justify-between h-10 flex-grow shadow-none"
-              >
-                <span className="flex gap-x-2 items-center justify-center leading-[1px] font-inter">
-                  <Icons.ZaviagoSearch />
-                  Zaviago
-                </span>
-                <ChevronsUpDown className="ml-2 shrink-0 opacity-50" viewBox="0 0 24 24" width='12' height='12' />
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-full p-0 z-[105] relative left-[24px]">
-              <Command>
-                <CommandInput placeholder="Search app..." />
-                <CommandList className='max-h-none'>
-                  <CommandEmpty>No results found.</CommandEmpty>
-                  <CommandGroup>
-                    <CommandItem>
-                      <Users viewBox="0 0 24 24" width='16' height='16' className="mr-2"/>
-                      Team
-                    </CommandItem>
-                    <CommandItem>
-                      <Shuffle viewBox="0 0 24 24" width='16' height='16' className="mr-2"/>
-                      Change Team
-                      <CommandShortcut>
-                        <ChevronRight viewBox="0 0 24 24" width='16' height='16' color='#09090B'/>
-                      </CommandShortcut>
-                    </CommandItem>
-                    <CommandItem>
-                      <UserPlus viewBox="0 0 24 24" width='16' height='16' className="mr-2"/>
-                      Invite Teammates
-                      <CommandShortcut>⌘+T</CommandShortcut>
-                    </CommandItem>
-                  </CommandGroup>
-                  <CommandSeparator />
-                  <CommandGroup heading="Current App">
-                    <CommandItem>
-                      <div className="w-5 h-5 rounded-full bg-[#5BB3FF] mr-2" />
-                      Blog / Pages
-                    </CommandItem>
-                  </CommandGroup>
-                  <CommandGroup heading="App">
-                    <CommandItem>
-                      <div className="w-5 h-5 rounded-full bg-[#5BB3FF] mr-2" />
-                      Loyalty System
-                    </CommandItem>
-                    <CommandItem>
-                      <div className="w-5 h-5 rounded-full bg-[#79FF97] mr-2" />
-                      Data Studio
-                    </CommandItem>
-                    <CommandItem>
-                      <div className="w-5 h-5 rounded-full bg-[#F4C344] mr-2" />
-                      B2B CRM
-                    </CommandItem>
-                    <CommandItem>
-                      <div className="w-5 h-5 rounded-full bg-[#FF9797] mr-2" />
-                      Commerce
-                    </CommandItem>
-                  </CommandGroup>
-                  <CommandSeparator />
-                  <CommandGroup>
-                    <CommandItem>
-                      <PlusCircle viewBox="0 0 24 24" width='16' height='16' className="mr-2"/>
-                      See more apps
-                    </CommandItem>
-                  </CommandGroup>
-                </CommandList>
-              </Command>
-            </PopoverContent>
+            <div id='popover' className="flex px-[14px] bg-white flex-row gap-2 z-[4]" aria-label="Sidebar">
+            <Popover>
+              <PopoverTrigger className="w-full">
+                <div className="flex items-center gap-x-2">
+                  <div className="min-w-9 min-h-9 relative">
+                    <Icons.BlogAndPagesAppIcon className='cursor-pointer w-9 h-9 z-9'/>
+                  </div>
+                  <span className="flex gap-x-2 items-center">
+                    <div className="flex flex-col text-left">
+                      <h2 className="cal-sans text-[17px] font-semibold">zaviago<span className="text-[13px]">.com</span></h2>
+                      <p className={`text-[11px] font-medium tracking-[-0.33px] text-[#5A5A5A] -mt-1`}>
+                        {window.location.hostname}
+                      </p>
+                    </div>
+                  </span>
+                </div>
+              </PopoverTrigger>
+              <PopoverContent className='p-1 relative left-3 min-w-[355px] w-full rounded-xl'>
+                <Command>
+                  <CommandList className='max-h-full w-full'>
+                    <CommandGroup>
+                      {workspaceMenus.map((menu, index) => (
+                        <CommandItem className='mb-[10px] px-[7px]' onSelect={() => {menu.link === '/coming-soon' ? window.open("/coming-soon",'_blank') : window.open(menu.link, '_self')}}>
+                          <div className="flex items-center justify-between w-full">
+                            <div className="flex items-center gap-x-[10px]">
+                              {menu.icon}
+                              <div>
+                                <h2 className="text-sm text-primary font-semibold">{menu.title}</h2>
+                                <p className="text-[13px] text-[#565656] -mt-1">{menu.desc}</p>
+                              </div>
+                            </div>
+                            {menu.enabled}
+                          </div>
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
             </Popover>
-            <Button onClick={() => animation.toggle('SideBar')} variant={'secondary'} className="p-0 h-10 w-10 flex justify-center items-center shadow-none">
-              <PanelLeftClose viewBox='0 0 24 24' width='16' height='16' strokeWidth='1.5'/>
-            </Button>
             </div>
-                
-            <div id='main' className="flex flex-col items-center  h-[144px]">
+
+            <div id='main' className="flex flex-col items-center px-3 pt-2 mt-3">
               <Button variant="ghost" className="flex h-9 gap-2 justify-start items-center self-stretch" onClick={() => window.location.href = `${import.meta.env.VITE_BASE_URL}/`}>
                 <LayoutGrid className={iconstyle}/>
                 <h2 className="text-forground font-inter text-[13px] leading-[20px]">Dashboard</h2>
-              </Button>
-              <Button variant="ghost" className="flex h-9 gap-2 justify-start items-center  self-stretch">
-                <BellIcon />
-                <h2 className="text-forground font-inter text-[13px] leading-[20px]">Notifications</h2>
-              </Button>
-              <Button variant="ghost" className="flex h-9 gap-2 justify-start items-center  self-stretch">
-                <Search className={iconstyle}/>
-                <h2 className="text-forground font-inter text-[13px] leading-[20px]">Search</h2>
               </Button>
               <Button variant="ghost" className="flex h-9 gap-2 justify-start items-center self-stretch" onClick={() => window.location.href = `${import.meta.env.VITE_BASE_URL}/dashboard/settings/account`}>
                 <Settings className={iconstyle}/>
@@ -226,7 +190,7 @@ export function SidebarMain({ className}: {className? : string}) {
         </div>
 
 
-        <div id='secondary' className="flex flex-col gap-4">
+        <div id='secondary' className="flex flex-col gap-4 px-3">
               <div id='Blogs block' className="flex flex-col py-4 gap-[8px]">
                 <div  className="flex justify-start items-center">          
                     <h2 className="sidebar-title px-4">
@@ -243,9 +207,7 @@ export function SidebarMain({ className}: {className? : string}) {
                         </Button>
                       </Link>
                     )
-                  }
-                  )
-                  }
+                  })}
                 </div>
               </div>
 
@@ -267,9 +229,7 @@ export function SidebarMain({ className}: {className? : string}) {
                         </Button>
                       </Link>
                     )
-                  }
-                  )
-                  }
+                  })}
                 </div>
             </div>
         </div>

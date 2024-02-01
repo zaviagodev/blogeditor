@@ -1,2 +1,0 @@
-import{j as t,r}from"./vendor-790e91e5.js";import{P as o}from"./playground-903eecb8.js";import"./header-292a4ffe.js";import"./drawline-861961f1.js";import"./index-c96cb0ea.js";import"./button-d8124f17.js";import"./floating-ui.dom-696c277b.js";import"./composer-33919ee7.js";function l(){return t.jsx(r.Suspense,{fallback:"Loading...",children:t.jsx(o,{state:"edit",page:"Post"})})}export{l as default};
-//# sourceMappingURL=page-ea27baaa.js.map
