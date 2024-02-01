@@ -4,6 +4,7 @@ import upgradeProBg from '@/img/upgrade-pro-bg.png'
 import { ServiceBadge } from '@/component/mainComponent/sidebar/badge'
 import ServicePrivileges from '@/component/mainComponent/sidebar/privileges'
 import { Link } from 'react-router-dom'
+import { Icons } from '@/components/ui/icons'
 import { BellIcon, LightningBoltIcon, EyeNoneIcon } from '@radix-ui/react-icons'
 import { Button } from '@/components/ui/button'
 import { Switch } from '@/components/ui/switch'
@@ -55,10 +56,13 @@ export default function UpgradeProModal(){
   return (
     <Dialog open={openModal} onOpenChange={handleCloseModal}>
       <DialogTrigger>
-        <Button variant='ghost' className='text-[#006AFF] hover:text-[#006AFF] hover:bg-transparent gap-x-2 text-xs flex items-center font-normal'>
-          <LightningBoltIcon color='#006AFF'/>
-          Upgrade to Pro
-        </Button>
+        <div className='text-[13px] flex gap-x-[5px] items-center font-medium bg-accent pl-2 py-1 pr-1 rounded-md h-[34px]'>
+          อัปเกรด
+          <div className='flex bg-black rounded-md text-white cal-sans text-[13px] font-semibold h-full p-[6px] gap-x-[5px]'>
+            <Icons.UpgradeProIcon />
+            โปร
+          </div>
+        </div>
       </DialogTrigger>
       <DialogContent className='p-0 border-0 max-w-4xl'>
         <DialogHeader className='flex-row'>

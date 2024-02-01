@@ -15,22 +15,21 @@ import { FrappeProvider } from 'frappe-react-sdk'
 import { Toaster } from "@/components/ui/toaster"
 import { LoadingStateProvider } from './provider/loadinStateProvider.tsx';
 import { ProgressDemo } from './component/progress.tsx';
-
-
-
-
+import { getToken } from "./utils/helper";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    	<FrappeProvider 
+    <FrappeProvider
+      url={import.meta.env.VITE_ERP_URL ?? ""}
+      enableSocket={false}
       tokenParams={
+        import.meta.env.VITE_USE_TOKEN_AUTH == 'true' ?
         {
+          type: import.meta.env.VITE_TOKEN_TYPE ? import.meta.env.VITE_TOKEN_TYPE : "token", 
           useToken: true,
-          token: () => process.env.TOKEN!,
-          type: 'Bearer'
-        }
-      }
-        >
+          token: () => import.meta.env.VITE_TOKEN_API ? `${import.meta.env.VITE_TOKEN_API}:${import.meta.env.VITE_TOKEN_SECRET}` : getToken,
+        } : undefined
+    }>
       <AnimationProvider>
       <TabProvider>
       <LoadingStateProvider>

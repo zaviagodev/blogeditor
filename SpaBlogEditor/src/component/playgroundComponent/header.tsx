@@ -23,19 +23,22 @@ export default function Header ({className} : {className ?: string}) {
   }
     const tab = useContext(TabContext)
     return ( 
-      <div className={cn(className,'font-inter h-12 px-7')}>
+      <div className={cn(className,'font-inter h-[53px] py-1 px-[19px]')}>
         <div className="flex flex-row items-center gap-[8px]">
             <span className="text-[#18181B] font-Inter font-medium text-[14px] leading-[20px]">{tab.variable}</span>
         </div>
         <div className="flex flex-row items-center space-x-3">
-            <div className="flex px-[2px] items-center pr-6">
+            <div className="flex px-[2px] items-center pr-3">
                 <div className="flex items-center">
                   <UpgradeProModal />
-                  <div className="space-x-5 flex items-center">
+                  <div className="space-x-5 flex items-center ml-[19px]">
                     <Dialog open={open} onOpenChange={setOpen}>
-                      <DialogTrigger className='outline-none bg-zinc-100 rounded-md px-2 py-[6px] text-[13px] h-7 flex items-center w-[300px] text-zinc-500 tracking-[0.02em] gap-x-[9px] leading-5'>
+                      <DialogTrigger className='outline-none bg-zinc-100 pl-2 pr-4 py-[6px] text-[13px] h-7 flex items-center text-zinc-500 tracking-[0.02em] gap-x-[9px] leading-5 w-[155px] rounded-full'>
                         <Search viewBox='0 0 24 24' width='14' height='14' className='ml-1'/>
-                        Search or type a command (Ctrl + G)
+                        <div className="flex justify-between items-center w-full text-xs">
+                          <p>ค้นหา</p>
+                          <p>(CTRL +G)</p>
+                        </div>
                       </DialogTrigger>
                       <DialogContent className='p-0'>
                       <Command>

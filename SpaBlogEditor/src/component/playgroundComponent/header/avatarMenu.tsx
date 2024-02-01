@@ -17,7 +17,7 @@ export default function AvatarMenu(){
   return (
     <Popover>
       <PopoverTrigger>
-        <Avatar className='w-7 h-7 text-sm'>
+        <Avatar className='w-8 h-8 text-sm'>
           <AvatarImage src="" />
           <AvatarFallback>A</AvatarFallback>
         </Avatar>

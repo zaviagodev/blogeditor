@@ -129,7 +129,7 @@ export default function TaskPage() {
     if (error) {
       toast({title:'Eroor : error while fetching the blogs'})
     }
-  },[error, tabType.mutate])
+  },[tabType.mutate])
   return (
     <>
       <div className="flex h-full flex-1 flex-col gap-5 px-[50px] py-5 flex-wrap content-center">
